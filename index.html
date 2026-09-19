@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CubixoraSMP - Panel</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #121212; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 90vh; }
-        .card { background: #1e1e1e; padding: 30px; border-radius: 10px; width: 100%; max-width: 600px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        h1, h2, h3 { color: #5865F2; text-align: center; }
+        body { font-family: Arial, sans-serif; background-color: #121212; color: #fff; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 90vh; box-sizing: border-box; }
+        .card { background: #1e1e1e; padding: 20px; border-radius: 10px; width: 100%; max-width: 600px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); box-sizing: border-box; }
+        h1, h2, h3 { color: #5865F2; text-align: center; word-break: break-word; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; color: #b9bbbe; font-size: 14px; }
         input[type="text"], input[type="password"], textarea, select { width: 100%; padding: 10px; background: #2b2d31; border: 1px solid #383a40; border-radius: 5px; color: white; box-sizing: border-box; }
-        .btn { width: 100%; background: #5865F2; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn { width: 100%; background: #5865F2; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px; box-sizing: border-box; }
         .btn:hover { background: #4752c4; }
         .secondary-btn { background: #4f545c; }
         .success-btn { background: #248046; }
@@ -20,16 +20,20 @@
         .hidden { display: none !important; }
         .toggle-text { text-align: center; margin-top: 15px; font-size: 14px; color: #b9bbbe; cursor: pointer; }
         .toggle-text span { color: #5865F2; font-weight: bold; }
-        .ip-box { background: #2f3136; padding: 10px; text-align: center; border-radius: 5px; margin-bottom: 15px; border: 1px dashed #5865F2; }
-        .menu-btn { display: block; background: #2b2d31; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 5px; font-weight: bold; margin-bottom: 10px; }
+        .ip-box { background: #2f3136; padding: 10px; text-align: center; border-radius: 5px; margin-bottom: 15px; border: 1px dashed #5865F2; word-break: break-all; }
+        .menu-btn { display: block; background: #2b2d31; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 5px; font-weight: bold; margin-bottom: 10px; box-sizing: border-box; }
         .menu-btn:hover { background: #5865F2; }
-        .list-item { background: #2f3136; padding: 12px; border-radius: 5px; margin-bottom: 10px; font-size: 13px; border-left: 4px solid #5865F2; }
+        .list-item { background: #2f3136; padding: 12px; border-radius: 5px; margin-bottom: 10px; font-size: 13px; border-left: 4px solid #5865F2; word-break: break-word; box-sizing: border-box; }
         .status-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
         .status-acik { background: #248046; color: #fff; }
         .status-beklemede { background: #faa61a; color: #000; }
         .status-red { background: #da373c; color: #fff; }
-        .chat-box { background: #18191c; padding: 8px; border-radius: 5px; max-height: 120px; overflow-y: auto; margin-top: 8px; margin-bottom: 8px; font-size: 12px; }
-        .scrollable-form { max-height: 400px; overflow-y: auto; padding-right: 10px; }
+        .chat-box { background: #18191c; padding: 8px; border-radius: 5px; max-height: 120px; overflow-y: auto; margin-top: 8px; margin-bottom: 8px; font-size: 12px; word-break: break-word; }
+        .scrollable-form { max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        .staff-row { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; border-bottom: 1px solid #383a40; padding-bottom: 8px; }
+        @media(min-width: 400px) {
+            .staff-row { flex-direction: row; justify-content: space-between; align-items: center; }
+        }
     </style>
 </head>
 <body>
@@ -65,14 +69,14 @@
 
         <a href="#" class="menu-btn" onclick="basvuruEkraniAc()">📝 20 Soruluk Yetkili Başvuru Formu</a>
         <a href="#" class="menu-btn" onclick="ticketAcEkrani()">🎫 Discord Tarzı Destek (Ticket)</a>
-        <a href="#" class="menu-btn" style="background: #248046;" onclick="magazaAc()">🛒 Mağaza (VIP / Ürünler)</a>
+        <a href="#" class="menu-btn" style="background: #248046;" onclick="magazaAc()">🛒 Mağaza (VIP / Kart ile Ödeme)</a>
         <a href="https://discord.gg/5sXrrGkvz" target="_blank" class="menu-btn" style="background: #5865F2;">💬 Discord Sunucusu</a>
         <a href="#" id="adminBtn" class="menu-btn hidden" style="background: #faa61a; color: #000;" onclick="yoneticiPaneliAc()">⚙️ Yetkili / Yönetim Paneli</a>
 
         <button class="btn secondary-btn" onclick="cikisYap()">Çıkış Yap</button>
     </div>
 
-    <!-- BAŞVURU (20 SORU VE DURUM GÖSTERİMİ) -->
+    <!-- BAŞVURU -->
     <div id="formDiv" class="hidden">
         <h2>Yetkili Başvuru Formu</h2>
         <div id="userAppStatusArea" style="margin-bottom: 15px;"></div>
@@ -121,25 +125,41 @@
         <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 10px;">Geri Dön</button>
     </div>
 
-    <!-- MAĞAZA -->
+    <!-- MAĞAZA VE KART İLE ÖDEME -->
     <div id="storeDiv" class="hidden">
         <h2>🛒 CubixoraSMP Mağaza</h2>
+        <p style="text-align: center; color: #b9bbbe; font-size: 13px;">Türkiye (TR) ve Azerbaycan (AZ) Banka / Kredi Kartları Geçerlidir.</p>
+        
         <div class="list-item">
             <strong>👑 CVIP++ Üyelik</strong><br>
-            <span style="color:#b9bbbe;">En üst düzey avantajlar, özel kitler ve komutlar!</span><br>
-            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('CVIP++ Üyelik')">Satın Al (100 TL)</button>
+            <span style="color:#b9bbbe;">En üst düzey avantajlar, özel kitler!</span><br>
+            <button class="btn success-btn" style="padding:6px; font-size:12px; margin-top:8px; width:auto;" onclick="kartlaOde('CVIP++ Üyelik', 100)">Kredi Kartı ile Al (100 TL)</button>
         </div>
         <div class="list-item">
             <strong>⭐ CVIP+ Üyelik</strong><br>
             <span style="color:#b9bbbe;">Gelişmiş kitler ve ayrıcalıklı yetkiler!</span><br>
-            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('CVIP+ Üyelik')">Satın Al (70 TL)</button>
+            <button class="btn success-btn" style="padding:6px; font-size:12px; margin-top:8px; width:auto;" onclick="kartlaOde('CVIP+ Üyelik', 70)">Kredi Kartı ile Al (70 TL)</button>
         </div>
         <div class="list-item">
             <strong>💎 CVIP Üyelik</strong><br>
             <span style="color:#b9bbbe;">Temel VIP avantajları ve başlangıç desteği!</span><br>
-            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('CVIP Üyelik')">Satın Al (50 TL)</button>
+            <button class="btn success-btn" style="padding:6px; font-size:12px; margin-top:8px; width:auto;" onclick="kartlaOde('CVIP Üyelik', 50)">Kredi Kartı ile Al (50 TL)</button>
         </div>
         <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 15px;">Geri Dön</button>
+    </div>
+
+    <!-- KART ÖDEME EKRANI -->
+    <div id="paymentDiv" class="hidden">
+        <h2>💳 Kart ile Güvenli Ödeme</h2>
+        <p id="payProductInfo" style="text-align: center; color: #57f287; font-weight: bold;"></p>
+        <div class="form-group"><label>Kart Üzerindeki İsim Soyisim:</label><input type="text" id="pName" placeholder="Ad Soyad"></div>
+        <div class="form-group"><label>Kart Numarası (16 Hane):</label><input type="text" id="pNumber" maxlength="16" placeholder="XXXX XXXX XXXX XXXX"></div>
+        <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex:1;"><label>Ay / Yıl:</label><input type="text" id="pDate" placeholder="AA/YY" maxlength="5"></div>
+            <div class="form-group" style="flex:1;"><label>CVV / CVC:</label><input type="password" id="pCvv" placeholder="XXX" maxlength="3"></div>
+        </div>
+        <button class="btn success-btn" onclick="odemeyiTamamla()">Ödemeyi Onayla ve Satın Al</button>
+        <button class="btn secondary-btn" onclick="sayfaGoster('storeDiv')" style="margin-top: 10px;">İptal Et / Geri Dön</button>
     </div>
 
     <!-- YÖNETİCİ / YETKİLİ PANELİ -->
@@ -150,12 +170,12 @@
         
         <div id="adminAppSection">
             <h3>Başvuru Yönetimi</h3>
-            <div id="adminApps" style="max-height: 150px; overflow-y: auto;"></div>
+            <div id="adminApps" style="max-height: 180px; overflow-y: auto;"></div>
         </div>
         
         <div id="adminTicketSection" style="margin-top: 15px;">
             <h3>🎫 Ticket Yönetimi</h3>
-            <div id="adminTickets" style="max-height: 200px; overflow-y: auto;"></div>
+            <div id="adminTickets" style="max-height: 220px; overflow-y: auto;"></div>
         </div>
         
         <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 15px;">Geri Dön</button>
@@ -166,14 +186,16 @@
     if(!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
     if(!localStorage.getItem('applications')) localStorage.setItem('applications', JSON.stringify([]));
     if(!localStorage.getItem('tickets')) localStorage.setItem('tickets', JSON.stringify([]));
-    // Yetki objesi: { username: { smpStaff: true/false } }
     if(!localStorage.getItem('staffsMap')) {
         let defaultMap = { 'AZELORD077': { smpStaff: true } };
         localStorage.setItem('staffsMap', JSON.stringify(defaultMap));
     }
 
+    let secilenUrun = "";
+    let secilenFiyat = 0;
+
     function sayfaGoster(id) {
-        ['loginDiv', 'registerDiv', 'menuDiv', 'formDiv', 'ticketDiv', 'storeDiv', 'adminDiv'].forEach(divId => {
+        ['loginDiv', 'registerDiv', 'menuDiv', 'formDiv', 'ticketDiv', 'storeDiv', 'paymentDiv', 'adminDiv'].forEach(divId => {
             document.getElementById(divId).classList.add('hidden');
         });
         document.getElementById(id).classList.remove('hidden');
@@ -347,8 +369,8 @@
                     <strong>[${t.category}]</strong> <span class="status-badge ${badgeClass}">${t.status}</span>
                     <div class="chat-box">${chatHtml}</div>
                     ${t.status === 'Açık' ? `
-                        <input type="text" id="userMsg_${t.id}" placeholder="Mesaj yaz..." style="font-size:12px; padding:5px; margin-bottom:5px;">
-                        <button class="btn success-btn" style="padding:4px; width:auto; font-size:11px;" onclick="kullaniciMesajGonder(${t.id})">Gönder</button>
+                        <input type="text" id="userMsg_${t.id}" placeholder="Mesaj yaz..." style="font-size:12px; padding:6px; margin-bottom:5px;">
+                        <button class="btn success-btn" style="padding:6px; width:auto; font-size:12px;" onclick="kullaniciMesajGonder(${t.id})">Gönder</button>
                     ` : '<span style="color:#da373c; font-size:11px;">Bu talep kapatıldı.</span>'}
                 </div>`;
             });
@@ -361,8 +383,31 @@
         sayfaGoster('storeDiv');
     }
 
-    function satinAl(item) {
-        alert(`"${item}" ürünü başarıyla satın alındı! Oyunda hesabınıza yüklenecektir.`);
+    function kartlaOde(urunAdi, fiyat) {
+        secilenUrun = urunAdi;
+        secilenFiyat = fiyat;
+        document.getElementById('payProductInfo').innerText = `${urunAdi} - ${fiyat} TL`;
+        sayfaGoster('paymentDiv');
+    }
+
+    function odemeyiTamamla() {
+        let isim = document.getElementById('pName').value.trim();
+        let numara = document.getElementById('pNumber').value.trim();
+        let tarih = document.getElementById('pDate').value.trim();
+        let cvv = document.getElementById('pCvv').value.trim();
+
+        if(!isim || !numara || !tarih || !cvv) {
+            alert('Lütfen kart bilgilerinin tümünü eksiksiz doldurun!');
+            return;
+        }
+
+        if(numara.length < 16) {
+            alert('Geçersiz kart numarası (16 hane olmalıdır)!');
+            return;
+        }
+
+        alert(`Ödeme Başarılı! (${secilenFiyat} TL)\n"${secilenUrun}" hesabınıza tanımlandı. İyi oyunlar dileriz!`);
+        sayfaGoster('menuDiv');
     }
 
     function yetkiliMesajGonder(ticketId) {
@@ -388,9 +433,9 @@
             let uBox = '<b>Kullanıcıya SMP Yetkisi Ver / Kaldır:</b><br>';
             users.forEach(u => {
                 let info = map[u.username] || { smpStaff: false };
-                uBox += `<div style="margin-top:8px; border-bottom:1px solid #383a40; padding-bottom:5px;">
-                    <strong>${u.username}</strong><br>
-                    🛡️ SMP Yetkilisi: <button class="btn ${info.smpStaff ? 'danger-btn' : 'success-btn'}" style="padding:2px 6px; width:auto; font-size:11px;" onclick="yetkiDegistir('${u.username}', 'smpStaff')">${info.smpStaff ? 'Kaldır' : 'Ver'}</button>
+                uBox += `<div class="staff-row">
+                    <span style="font-weight: bold; word-break: break-all;">👤 ${u.username}</span>
+                    <button class="btn ${info.smpStaff ? 'danger-btn' : 'success-btn'}" style="padding:6px 12px; width:auto; font-size:12px; margin:0;" onclick="yetkiDegistir('${u.username}', 'smpStaff')">${info.smpStaff ? 'Yetkiyi Kaldır' : 'Yetki Ver'}</button>
                 </div>`;
             });
             document.getElementById('userManageBox').innerHTML = uBox;
@@ -409,9 +454,11 @@
                 appHtml += `<div class="list-item">
                     <strong>Aday:</strong> ${a.user} | <span class="status-badge ${badgeClass}">${a.status}</span><br>
                     <div style="font-size:11px; color:#b9bbbe; max-height:60px; overflow-y:auto; margin:5px 0;">${a.text}</div>
-                    <button class="btn success-btn" style="padding:4px; width:auto; font-size:11px;" onclick="basvuruDurum(${index}, 'Kabul Edildi')">Kabul Et</button>
-                    <button class="btn danger-btn" style="padding:4px; width:auto; font-size:11px;" onclick="basvuruDurum(${index}, 'Reddedildi')">Reddet</button>
-                    <button class="btn secondary-btn" style="padding:4px; width:auto; font-size:11px; float:right;" onclick="silApp(${index})">Sil</button>
+                    <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:5px;">
+                        <button class="btn success-btn" style="padding:5px 8px; width:auto; font-size:11px; margin:0;" onclick="basvuruDurum(${index}, 'Kabul Edildi')">Kabul Et</button>
+                        <button class="btn danger-btn" style="padding:5px 8px; width:auto; font-size:11px; margin:0;" onclick="basvuruDurum(${index}, 'Reddedildi')">Reddet</button>
+                        <button class="btn secondary-btn" style="padding:5px 8px; width:auto; font-size:11px; margin:0; margin-left:auto;" onclick="silApp(${index})">Sil</button>
+                    </div>
                 </div>`;
             });
             document.getElementById('adminApps').innerHTML = appHtml || '<div class="list-item" style="color:#b9bbbe;">Başvuru yok.</div>';
@@ -430,10 +477,12 @@
                     <strong>Açan:</strong> ${t.user} | <strong>[${t.category}]</strong> <span class="status-badge ${badgeClass}">${t.status}</span>
                     <div class="chat-box">${chatHtml}</div>
                     <div style="margin-top:5px;">
-                        <input type="text" id="staffMsg_${t.id}" placeholder="Yanıt yaz..." style="font-size:12px; padding:5px; margin-bottom:5px;">
-                        <button class="btn success-btn" style="padding:4px; width:auto; font-size:11px;" onclick="yetkiliMesajGonder(${t.id})">Yanıtla</button>
-                        <button class="btn warning-btn" style="padding:4px; width:auto; font-size:11px;" onclick="ticketKapat(${index})">Kapat</button>
-                        <button class="btn danger-btn" style="padding:4px; width:auto; font-size:11px; float:right;" onclick="silTicket(${index})">Sil</button>
+                        <input type="text" id="staffMsg_${t.id}" placeholder="Yanıt yaz..." style="font-size:12px; padding:6px; margin-bottom:5px;">
+                        <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                            <button class="btn success-btn" style="padding:5px 8px; width:auto; font-size:11px; margin:0;" onclick="yetkiliMesajGonder(${t.id})">Yanıtla</button>
+                            <button class="btn warning-btn" style="padding:5px 8px; width:auto; font-size:11px; margin:0;" onclick="ticketKapat(${index})">Kapat</button>
+                            <button class="btn danger-btn" style="padding:5px 8px; width:auto; font-size:11px; margin:0; margin-left:auto;" onclick="silTicket(${index})">Sil</button>
+                        </div>
                     </div>
                 </div>`;
             });
@@ -472,7 +521,7 @@
         let apps = JSON.parse(localStorage.getItem('applications'));
         apps.splice(i, 1);
         localStorage.setItem('applications', JSON.stringify(apps));
-        yoneticiPaneliAc();
+        yoneticiPaneliAns();
     }
 
     function silTicket(i) {
