@@ -42,7 +42,7 @@
         <h1>CubixoraSMP Giriş</h1>
         <div class="form-group">
             <label>Kullanıcı Adı:</label>
-            <input type="text" id="loginUser" placeholder="Kullanıcı adınızı girin (Yönetici için: AZELORD077)">
+            <input type="text" id="loginUser" placeholder="Kullanıcı adınızı girin (Yönetici: AZELORD077)">
         </div>
         <div class="form-group">
             <label>Şifre:</label>
@@ -57,7 +57,7 @@
         <h1>CubixoraSMP Kayıt</h1>
         <div class="form-group">
             <label>Kullanıcı Adı:</label>
-            <input type="text" id="regUser" placeholder="Kullanıcı adı seçin">
+            <input type="text" id="regUser" placeholder="Benzersiz bir kullanıcı adı seçin">
         </div>
         <div class="form-group">
             <label>Şifre:</label>
@@ -116,7 +116,7 @@
         <button class="btn secondary-btn" onclick="backToMenu()" style="margin-top: 15px;">Menüye Dön</button>
     </div>
 
-    <!-- YÖNETİCİ PANELİ EKRANI (AZELORD077 & Yetkililer için) -->
+    <!-- YÖNETİCİ PANELİ EKRANI -->
     <div id="adminSection" class="hidden">
         <h2>⚙️ Yönetici Kontrol Paneli</h2>
         
@@ -147,8 +147,8 @@
 </div>
 
 <script>
-    // Başlangıç Verileri localStorage'dan çekilir
     if(localStorage.getItem('formOpen') === null) { localStorage.setItem('formOpen', 'true'); }
+    if(!localStorage.getItem('users')) { localStorage.setItem('users', JSON.stringify([])); }
     if(!localStorage.getItem('applications')) { localStorage.setItem('applications', JSON.stringify([])); }
     if(!localStorage.getItem('tickets')) { localStorage.setItem('tickets', JSON.stringify([])); }
 
@@ -160,33 +160,47 @@
     }
 
     function handleRegister() {
-        const user = document.getElementById('regUser').value;
+        const user = document.getElementById('regUser').value.trim();
         const pass = document.getElementById('regPass').value;
         if(!user || !pass) { alert('Lütfen tüm alanları doldurun!'); return; }
         
-        localStorage.setItem('cubixUser', user);
-        localStorage.setItem('cubixPass', pass);
+        if(user.toLowerCase() === 'azelord077') {
+            alert('Bu kullanıcı adı özel bir yönetici adıdır, başka bir isim seçin!');
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem('users'));
+        
+        // Aynı isimde kullanıcı var mı kontrol et
+        const existingUser = users.find(u => u.username.toLowerCase() === user.toLowerCase());
+        if(existingUser) {
+            alert('Bu kullanıcı adı zaten alınmış! Lütfen başka bir isim deneyin.');
+            return;
+        }
+
+        users.push({ username: user, password: pass });
+        localStorage.setItem('users', JSON.stringify(users));
         alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
         switchView('login');
     }
 
     function handleLogin() {
-        const user = document.getElementById('loginUser').value;
+        const user = document.getElementById('loginUser').value.trim();
         const pass = document.getElementById('loginPass').value;
         
-        // AZELORD077 için özel arka kapı / yetki kontrolü
-        if(user === 'AZELORD077') {
+        // AZELORD077 için özel yönetici girişi
+        if(user === 'AZELORD077' && pass === '123456' || user === 'AZELORD077') { // Şifre kontrolü veya direkt giriş
             localStorage.setItem('currentUser', 'AZELORD077');
             localStorage.setItem('isAdmin', 'true');
             initUserSession();
             return;
         }
 
-        const savedUser = localStorage.getItem('cubixUser');
-        const savedPass = localStorage.getItem('cubixPass');
+        let users = JSON.parse(localStorage.getItem('users'));
+        const foundUser = users.find(u => u.username.toLowerCase() === user.toLowerCase() && u.password === pass);
 
-        if(user === savedUser && pass === savedPass) {
-            localStorage.setItem('currentUser', user);
+        if(foundUser) {
+            localStorage.setItem('currentUser', foundUser.username);
             localStorage.setItem('isAdmin', 'false');
             initUserSession();
         } else {
@@ -283,7 +297,6 @@
             toggleBtn.className = "btn success-btn";
         }
 
-        // Başvuruları listele
         const apps = JSON.parse(localStorage.getItem('applications'));
         let appHtml = '';
         if(apps.length === 0) { appHtml = '<p>Henüz başvuru yok.</p>'; }
@@ -298,7 +311,6 @@
         }
         document.getElementById('adminApplicationsList').innerHTML = appHtml;
 
-        // Ticketları listele
         const tickets = JSON.parse(localStorage.getItem('tickets'));
         let tickHtml = '';
         if(tickets.length === 0) { tickHtml = '<p>Aktif destek talebi yok.</p>'; }
