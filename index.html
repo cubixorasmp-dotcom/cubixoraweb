@@ -30,10 +30,7 @@
         .status-red { background: #da373c; color: #fff; }
         .chat-box { background: #18191c; padding: 8px; border-radius: 5px; max-height: 120px; overflow-y: auto; margin-top: 8px; margin-bottom: 8px; font-size: 12px; word-break: break-word; }
         .scrollable-form { max-height: 400px; overflow-y: auto; padding-right: 5px; }
-        .staff-row { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; border-bottom: 1px solid #383a40; padding-bottom: 8px; }
-        @media(min-width: 400px) {
-            .staff-row { flex-direction: row; justify-content: space-between; align-items: center; }
-        }
+        .staff-row { background: #222327; padding: 10px; border-radius: 5px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -165,6 +162,13 @@
     <!-- YÖNETİCİ / YETKİLİ PANELİ -->
     <div id="adminDiv" class="hidden">
         <h2>Yetkili Yönetim Paneli</h2>
+        
+        <!-- KASA VE BAKIYE BÖLÜMÜ -->
+        <div id="adminBalanceBox" class="hidden" style="background: #248046; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
+            <h3 style="margin: 0 0 5px 0; color: #fff;">💰 Mağaza Toplam Kasası</h3>
+            <span id="totalBalanceText" style="font-size: 22px; font-weight: bold; color: #fff;">0 TL</span>
+        </div>
+
         <h3 id="userManageTitle">Yetkili Atama (Sadece AZELORD077)</h3>
         <div id="userManageBox" class="form-group" style="background:#2f3136; padding:10px; border-radius:5px;"></div>
         
@@ -186,8 +190,9 @@
     if(!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
     if(!localStorage.getItem('applications')) localStorage.setItem('applications', JSON.stringify([]));
     if(!localStorage.getItem('tickets')) localStorage.setItem('tickets', JSON.stringify([]));
+    if(!localStorage.getItem('storeBalance')) localStorage.setItem('storeBalance', '0');
     if(!localStorage.getItem('staffsMap')) {
-        let defaultMap = { 'AZELORD077': { smpStaff: true } };
+        let defaultMap = { 'AZELORD077': { role: 'Kurucu (Admin)' } };
         localStorage.setItem('staffsMap', JSON.stringify(defaultMap));
     }
 
@@ -240,22 +245,18 @@
     }
 
     function getStaffInfo(user) {
-        if(user === 'AZELORD077') return { smpStaff: true };
+        if(user === 'AZELORD077') return { role: 'Kurucu (Admin)' };
         let map = JSON.parse(localStorage.getItem('staffsMap'));
-        return map[user] || { smpStaff: false };
-    }
-
-    function herhangibirYetkisiVarMi(user) {
-        if(user === 'AZELORD077') return true;
-        let info = getStaffInfo(user);
-        return info.smpStaff;
+        return map[user] || null;
     }
 
     function paneleGec() {
         const currentUser = localStorage.getItem('currentUser');
         document.getElementById('welcomeUser').innerText = currentUser;
 
-        if(herhangibirYetkisiVarMi(currentUser)) {
+        let staffInfo = getStaffInfo(currentUser);
+        if(staffInfo) {
+            document.getElementById('adminTag').innerText = `⭐ [${staffInfo.role}] ⭐`;
             document.getElementById('adminTag').classList.remove('hidden');
             document.getElementById('adminBtn').classList.remove('hidden');
         } else {
@@ -406,6 +407,11 @@
             return;
         }
 
+        // Kasaya para ekleme
+        let currentBal = parseFloat(localStorage.getItem('storeBalance')) || 0;
+        currentBal += secilenFiyat;
+        localStorage.setItem('storeBalance', currentBal.toString());
+
         alert(`Ödeme Başarılı! (${secilenFiyat} TL)\n"${secilenUrun}" hesabınıza tanımlandı. İyi oyunlar dileriz!`);
         sayfaGoster('menuDiv');
     }
@@ -427,25 +433,41 @@
         let staffInfo = getStaffInfo(currentUser);
         
         if(currentUser === 'AZELORD077') {
+            document.getElementById('adminBalanceBox').classList.remove('hidden');
+            let totalBal = localStorage.getItem('storeBalance') || '0';
+            document.getElementById('totalBalanceText').innerText = totalBal + ' TL';
+
             document.getElementById('userManageTitle').style.display = 'block';
             let users = JSON.parse(localStorage.getItem('users'));
             let map = JSON.parse(localStorage.getItem('staffsMap'));
             let uBox = '<b>Kullanıcıya Yetki Ver / Kaldır:</b><br>';
+            
             users.forEach(u => {
-                let info = map[u.username] || { smpStaff: false };
+                let info = map[u.username];
                 uBox += `<div class="staff-row">
                     <span style="font-weight: bold; word-break: break-all;">👤 ${u.username}</span>
-                    <button class="btn ${info.smpStaff ? 'danger-btn' : 'success-btn'}" style="padding:6px 12px; width:auto; font-size:12px; margin:0;" onclick="yetkiDegistir('${u.username}', 'smpStaff')">${info.smpStaff ? 'Yetkiyi Kaldır' : 'Yetki Ver'}</button>
+                    <div style="margin-top:5px; display:flex; gap:5px; flex-wrap:wrap; align-items:center;">
+                        <select id="roleSelect_${u.username}" style="flex:1; padding:5px; font-size:12px;">
+                            <option value="BoxPvP Yetkilisi">BoxPvP Yetkilisi</option>
+                            <option value="Towny Yetkilisi">Towny Yetkilisi</option>
+                            <option value="Rehber">Rehber</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        ${info ? `<button class="btn danger-btn" style="padding:6px 10px; width:auto; font-size:11px; margin:0;" onclick="yetkiKkaldir('${u.username}')">Yetkiyi Kaldır</button>` : 
+                                 `<button class="btn success-btn" style="padding:6px 10px; width:auto; font-size:11px; margin:0;" onclick="yetkiVer('${u.username}')">Yetki Ver</button>`}
+                    </div>
+                    ${info ? `<div style="font-size:11px; color:#57f287; margin-top:4px;">Aktif Yetki: ${info.role}</div>` : ''}
                 </div>`;
             });
             document.getElementById('userManageBox').innerHTML = uBox;
             document.getElementById('userManageBox').style.display = 'block';
         } else {
+            document.getElementById('adminBalanceBox').classList.add('hidden');
             document.getElementById('userManageTitle').style.display = 'none';
             document.getElementById('userManageBox').style.display = 'none';
         }
 
-        if(staffInfo.smpStaff) {
+        if(staffInfo) {
             document.getElementById('adminAppSection').style.display = 'block';
             let apps = JSON.parse(localStorage.getItem('applications'));
             let appHtml = '';
@@ -495,10 +517,17 @@
         sayfaGoster('adminDiv');
     }
 
-    function yetkiDegistir(username, type) {
+    function yetkiVer(username) {
+        let selectVal = document.getElementById(`roleSelect_${username}`).value;
         let map = JSON.parse(localStorage.getItem('staffsMap'));
-        if(!map[username]) map[username] = { smpStaff: false };
-        map[username][type] = !map[username][type];
+        map[username] = { role: selectVal };
+        localStorage.setItem('staffsMap', JSON.stringify(map));
+        yoneticiPaneliAc();
+    }
+
+    function yetkiKkaldir(username) {
+        let map = JSON.parse(localStorage.getItem('staffsMap'));
+        delete map[username];
         localStorage.setItem('staffsMap', JSON.stringify(map));
         yoneticiPaneliAc();
     }
