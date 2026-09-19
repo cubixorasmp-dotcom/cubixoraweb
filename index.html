@@ -63,41 +63,45 @@
             <code style="font-size: 16px; color: #57f287; font-weight: bold;">Cubixorasmp.play.hosting</code>
         </div>
 
-        <a href="#" class="menu-btn" onclick="sayfaGoster('formDiv')">📝 20 Soruluk Yetkili Başvuru Formu</a>
+        <a href="#" class="menu-btn" onclick="basvuruEkraniAc()">📝 20 Soruluk Yetkili Başvuru Formu</a>
         <a href="#" class="menu-btn" onclick="ticketAcEkrani()">🎫 Discord Tarzı Destek (Ticket)</a>
+        <a href="#" class="menu-btn" style="background: #248046;" onclick="magazaAc()">🛒 Mağaza (VIP / Ürünler)</a>
         <a href="https://discord.gg/5sXrrGkvz" target="_blank" class="menu-btn" style="background: #5865F2;">💬 Discord Sunucusu</a>
         <a href="#" id="adminBtn" class="menu-btn hidden" style="background: #faa61a; color: #000;" onclick="yoneticiPaneliAc()">⚙️ Yetkili / Yönetim Paneli</a>
 
         <button class="btn secondary-btn" onclick="cikisYap()">Çıkış Yap</button>
     </div>
 
-    <!-- BAŞVURU (20 SORU) -->
+    <!-- BAŞVURU (20 SORU VE DURUM GÖSTERİMİ) -->
     <div id="formDiv" class="hidden">
         <h2>Yetkili Başvuru Formu</h2>
-        <div class="scrollable-form">
-            <div class="form-group"><label>1. Adınız Soyadınız:</label><input type="text" id="q1"></div>
-            <div class="form-group"><label>2. Yaşınız:</label><input type="text" id="q2"></div>
-            <div class="form-group"><label>3. Discord Kullanıcı Adınız:</label><input type="text" id="q3"></div>
-            <div class="form-group"><label>4. Minecraft Oyun İçi Adınız (Nick):</label><input type="text" id="q4"></div>
-            <div class="form-group"><label>5. Günde Kaç Saat Aktif Olabilirsiniz?:</label><input type="text" id="q5"></div>
-            <div class="form-group"><label>6. Daha Önce Hangi Sunucularda Yetkililik Yaptınız?:</label><input type="text" id="q6"></div>
-            <div class="form-group"><label>7. Neden CubixoraSMP'de Yetkili Olmak İstiyorsunuz?:</label><input type="text" id="q7"></div>
-            <div class="form-group"><label>8. Oyuncularla İlişkileriniz Nasıldır?:</label><input type="text" id="q8"></div>
-            <div class="form-group"><label>9. Komut Bilginiz % Kaçtır? (Örn: /ban, /mute vb.):</label><input type="text" id="q9"></div>
-            <div class="form-group"><label>10. Bir oyuncu küfür ederse ilk ne yaparsınız?:</label><input type="text" id="q10"></div>
-            <div class="form-group"><label>11. Sunucuda hile kullanan birini görürseniz ne yaparsınız?:</label><input type="text" id="q11"></div>
-            <div class="form-group"><label>12. Yetkinizi kötüye kullanan birini görürseniz ne yaparsınız?:</label><input type="text" id="q12"></div>
-            <div class="form-group"><label>13. Ekip çalışmasına yatkın mısınız?:</label><input type="text" id="q13"></div>
-            <div class="form-group"><label>14. Mikrofonunuz var mı ve aktif kullanır mısınız?:</label><input type="text" id="q14"></div>
-            <div class="form-group"><label>15. Kriz anlarında (tartışma vb.) sakin kalabilir misiniz?:</label><input type="text" id="q15"></div>
-            <div class="form-group"><label>16. Tasarım, video veya reklam konusunda yeteneğiniz var mı?:</label><input type="text" id="q16"></div>
-            <div class="form-group"><label>17. Kuralları okudunuz mu ve tamamen kabul ediyor musunuz?:</label><input type="text" id="q17"></div>
-            <div class="form-group"><label>18. Oyuncular arasında ayrımcılık yapar mısınız?:</label><input type="text" id="q18"></div>
-            <div class="form-group"><label>19. Sunucuya maddi veya manevi ne katabilirsiniz?:</label><input type="text" id="q19"></div>
-            <div class="form-group"><label>20. Eklemek istediğiniz ekstra bir husus var mı?:</label><input type="text" id="q20"></div>
+        <div id="userAppStatusArea" style="margin-bottom: 15px;"></div>
+        <div id="appFormContent">
+            <div class="scrollable-form">
+                <div class="form-group"><label>1. Adınız Soyadınız:</label><input type="text" id="q1"></div>
+                <div class="form-group"><label>2. Yaşınız:</label><input type="text" id="q2"></div>
+                <div class="form-group"><label>3. Discord Kullanıcı Adınız:</label><input type="text" id="q3"></div>
+                <div class="form-group"><label>4. Minecraft Oyun İçi Adınız (Nick):</label><input type="text" id="q4"></div>
+                <div class="form-group"><label>5. Günde Kaç Saat Aktif Olabilirsiniz?:</label><input type="text" id="q5"></div>
+                <div class="form-group"><label>6. Daha Önce Hangi Sunucularda Yetkililik Yaptınız?:</label><input type="text" id="q6"></div>
+                <div class="form-group"><label>7. Neden CubixoraSMP'de Yetkili Olmak İstiyorsunuz?:</label><input type="text" id="q7"></div>
+                <div class="form-group"><label>8. Oyuncularla İlişkileriniz Nasıldır?:</label><input type="text" id="q8"></div>
+                <div class="form-group"><label>9. Komut Bilginiz % Kaçtır? (Örn: /ban, /mute vb.):</label><input type="text" id="q9"></div>
+                <div class="form-group"><label>10. Bir oyuncu küfür ederse ilk ne yaparsınız?:</label><input type="text" id="q10"></div>
+                <div class="form-group"><label>11. Sunucuda hile kullanan birini görürseniz ne yaparsınız?:</label><input type="text" id="q11"></div>
+                <div class="form-group"><label>12. Yetkinizi kötüye kullanan birini görürseniz ne yaparsınız?:</label><input type="text" id="q12"></div>
+                <div class="form-group"><label>13. Ekip çalışmasına yatkın mısınız?:</label><input type="text" id="q13"></div>
+                <div class="form-group"><label>14. Mikrofonunuz var mı ve aktif kullanır mısınız?:</label><input type="text" id="q14"></div>
+                <div class="form-group"><label>15. Kriz anlarında (tartışma vb.) sakin kalabilir misiniz?:</label><input type="text" id="q15"></div>
+                <div class="form-group"><label>16. Tasarım, video veya reklam konusunda yeteneğiniz var mı?:</label><input type="text" id="q16"></div>
+                <div class="form-group"><label>17. Kuralları okudunuz mu ve tamamen kabul ediyor musunuz?:</label><input type="text" id="q17"></div>
+                <div class="form-group"><label>18. Oyuncular arasında ayrımcılık yapar mısınız?:</label><input type="text" id="q18"></div>
+                <div class="form-group"><label>19. Sunucuya maddi veya manevi ne katabilirsiniz?:</label><input type="text" id="q19"></div>
+                <div class="form-group"><label>20. Eklemek istediğiniz ekstra bir husus var mı?:</label><input type="text" id="q20"></div>
+            </div>
+            <button class="btn success-btn" onclick="basvuruGonder()" style="margin-top:10px;">Başvuruyu Gönder</button>
         </div>
-        <button class="btn success-btn" onclick="basvuruGonder()" style="margin-top:10px;">Başvuruyu Gönder</button>
-        <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')">Geri Dön</button>
+        <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 10px;">Geri Dön</button>
     </div>
 
     <!-- TICKET -->
@@ -117,17 +121,42 @@
         <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 10px;">Geri Dön</button>
     </div>
 
+    <!-- MAĞAZA -->
+    <div id="storeDiv" class="hidden">
+        <h2>🛒 CubixoraSMP Mağaza</h2>
+        <div class="list-item">
+            <strong>💎 VIP Üyelik (30 Gün)</strong><br>
+            <span style="color:#b9bbbe;">Özel kitler, uçuş yetkisi ve özel prefix!</span><br>
+            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('VIP Üyelik')">Satın Al (50 TL)</button>
+        </div>
+        <div class="list-item">
+            <strong>👑 MVP+ Üyelik (Sınırsız)</strong><br>
+            <span style="color:#b9bbbe;">Mega kitler, renkli sohbet ve özel komutlar!</span><br>
+            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('MVP+ Üyelik')">Satın Al (120 TL)</button>
+        </div>
+        <div class="list-item">
+            <strong>💰 10 Milyon Oyun İçi Para ($)</strong><br>
+            <span style="color:#b9bbbe;">Sunucuda hemen zengin ol ve arsa al!</span><br>
+            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('10M Oyun Parası')">Satın Al (30 TL)</button>
+        </div>
+        <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 15px;">Geri Dön</button>
+    </div>
+
     <!-- YÖNETİCİ / YETKİLİ PANELİ -->
     <div id="adminDiv" class="hidden">
         <h2>Yetkili Yönetim Paneli</h2>
         <h3 id="userManageTitle">Yetkili Atama (Sadece AZELORD077)</h3>
         <div id="userManageBox" class="form-group" style="background:#2f3136; padding:10px; border-radius:5px;"></div>
         
-        <h3>Başvurular</h3>
-        <div id="adminApps" style="max-height: 150px; overflow-y: auto;"></div>
+        <div id="adminAppSection">
+            <h3>Başvuru Yönetimi</h3>
+            <div id="adminApps" style="max-height: 150px; overflow-y: auto;"></div>
+        </div>
         
-        <h3 style="margin-top: 15px;">🎫 Ticket Yönetimi</h3>
-        <div id="adminTickets" style="max-height: 200px; overflow-y: auto;"></div>
+        <div id="adminTicketSection" style="margin-top: 15px;">
+            <h3>🎫 Ticket Yönetimi</h3>
+            <div id="adminTickets" style="max-height: 200px; overflow-y: auto;"></div>
+        </div>
         
         <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 15px;">Geri Dön</button>
     </div>
@@ -137,10 +166,14 @@
     if(!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
     if(!localStorage.getItem('applications')) localStorage.setItem('applications', JSON.stringify([]));
     if(!localStorage.getItem('tickets')) localStorage.setItem('tickets', JSON.stringify([]));
-    if(!localStorage.getItem('staffs')) localStorage.setItem('staffs', JSON.stringify(['AZELORD077']));
+    // Yetki objesi: { username: { ticketStaff: true/false, appStaff: true/false } }
+    if(!localStorage.getItem('staffsMap')) {
+        let defaultMap = { 'AZELORD077': { ticketStaff: true, appStaff: true } };
+        localStorage.setItem('staffsMap', JSON.stringify(defaultMap));
+    }
 
     function sayfaGoster(id) {
-        ['loginDiv', 'registerDiv', 'menuDiv', 'formDiv', 'ticketDiv', 'adminDiv'].forEach(divId => {
+        ['loginDiv', 'registerDiv', 'menuDiv', 'formDiv', 'ticketDiv', 'storeDiv', 'adminDiv'].forEach(divId => {
             document.getElementById(divId).classList.add('hidden');
         });
         document.getElementById(id).classList.remove('hidden');
@@ -184,17 +217,23 @@
         }
     }
 
-    function yetkiliMi(user) {
+    function getStaffInfo(user) {
+        if(user === 'AZELORD077') return { ticketStaff: true, appStaff: true };
+        let map = JSON.parse(localStorage.getItem('staffsMap'));
+        return map[user] || { ticketStaff: false, appStaff: false };
+    }
+
+    function herhangibirYetkisiVarMi(user) {
         if(user === 'AZELORD077') return true;
-        let staffs = JSON.parse(localStorage.getItem('staffs'));
-        return staffs.includes(user);
+        let info = getStaffInfo(user);
+        return info.ticketStaff || info.appStaff;
     }
 
     function paneleGec() {
         const currentUser = localStorage.getItem('currentUser');
         document.getElementById('welcomeUser').innerText = currentUser;
 
-        if(yetkiliMi(currentUser)) {
+        if(herhangibirYetkisiVarMi(currentUser)) {
             document.getElementById('adminTag').classList.remove('hidden');
             document.getElementById('adminBtn').classList.remove('hidden');
         } else {
@@ -209,6 +248,31 @@
         sayfaGoster('loginDiv');
     }
 
+    function basvuruEkraniAc() {
+        let currentUser = localStorage.getItem('currentUser');
+        let apps = JSON.parse(localStorage.getItem('applications'));
+        let myApp = apps.find(a => a.user === currentUser);
+
+        let statusArea = document.getElementById('userAppStatusArea');
+        let formContent = document.getElementById('appFormContent');
+
+        if(myApp) {
+            let badgeClass = myApp.status === 'Beklemede' ? 'status-beklemede' : (myApp.status === 'Kabul Edildi' ? 'status-acik' : 'status-red');
+            statusArea.innerHTML = `<div class="list-item" style="text-align:center;">
+                <strong>Başvuru Durumunuz:</strong> <span class="status-badge ${badgeClass}">${myApp.status}</span>
+            </div>`;
+            if(myApp.status === 'Reddedildi') {
+                formContent.style.display = 'block'; // Yeniden başvurabilsin
+            } else {
+                formContent.style.display = 'none'; // Kabul edildiyse veya bekliyorsa formu gizle
+            }
+        } else {
+            statusArea.innerHTML = '';
+            formContent.style.display = 'block';
+        }
+        sayfaGoster('formDiv');
+    }
+
     function basvuruGonder() {
         let answers = [];
         for(let i=1; i<=20; i++) {
@@ -218,15 +282,19 @@
         }
 
         let apps = JSON.parse(localStorage.getItem('applications'));
+        let currentUser = localStorage.getItem('currentUser');
+        
+        // Eskisini silip yenisini ekle (yeniden başvuru için)
+        apps = apps.filter(a => a.user !== currentUser);
         apps.push({
             id: Date.now(),
-            user: localStorage.getItem('currentUser'),
+            user: currentUser,
             text: answers.join(' | '),
             status: 'Beklemede'
         });
         localStorage.setItem('applications', JSON.stringify(apps));
         alert('20 soruluk başvurunuz başarıyla gönderildi!');
-        sayfaGoster('menuDiv');
+        basvuruEkraniAc();
     }
 
     function ticketOlustur() {
@@ -290,6 +358,14 @@
         sayfaGoster('ticketDiv');
     }
 
+    function magazaAc() {
+        sayfaGoster('storeDiv');
+    }
+
+    function satinAl(item) {
+        alert(`"${item}" ürünü başarıyla satın alındı! Oyunda hesabınıza yüklenecektir.`);
+    }
+
     function yetkiliMesajGonder(ticketId) {
         let text = document.getElementById(`staffMsg_${ticketId}`).value.trim();
         if(!text) return;
@@ -304,16 +380,21 @@
 
     function yoneticiPaneliAc() {
         let currentUser = localStorage.getItem('currentUser');
+        let staffInfo = getStaffInfo(currentUser);
         
         // Sadece AZELORD077 yetkili atayabilir
         if(currentUser === 'AZELORD077') {
             document.getElementById('userManageTitle').style.display = 'block';
             let users = JSON.parse(localStorage.getItem('users'));
-            let staffs = JSON.parse(localStorage.getItem('staffs'));
+            let map = JSON.parse(localStorage.getItem('staffsMap'));
             let uBox = '<b>Kullanıcıya Yetki Ver / Kaldır:</b><br>';
             users.forEach(u => {
-                let isStaff = staffs.includes(u.username);
-                uBox += `<div style="margin-top:5px;">${u.username} - <button class="btn ${isStaff ? 'danger-btn' : 'success-btn'}" style="padding:2px 6px; width:auto; font-size:11px;" onclick="yetkiDegistir('${u.username}')">${isStaff ? 'Yetkiyi Al' : 'Yetki Ver'}</button></div>`;
+                let info = map[u.username] || { ticketStaff: false, appStaff: false };
+                uBox += `<div style="margin-top:8px; border-bottom:1px solid #383a40; padding-bottom:5px;">
+                    <strong>${u.username}</strong><br>
+                    🎫 Ticket Yetkisi: <button class="btn ${info.ticketStaff ? 'danger-btn' : 'success-btn'}" style="padding:2px 6px; width:auto; font-size:11px;" onclick="yetkiDegistir('${u.username}', 'ticketStaff')">${info.ticketStaff ? 'Kaldır' : 'Ver'}</button> | 
+                    📝 Başvuru Yetkisi: <button class="btn ${info.appStaff ? 'danger-btn' : 'success-btn'}" style="padding:2px 6px; width:auto; font-size:11px;" onclick="yetkiDegistir('${u.username}', 'appStaff')">${info.appStaff ? 'Kaldır' : 'Ver'}</button>
+                </div>`;
             });
             document.getElementById('userManageBox').innerHTML = uBox;
             document.getElementById('userManageBox').style.display = 'block';
@@ -322,55 +403,62 @@
             document.getElementById('userManageBox').style.display = 'none';
         }
 
-        // Başvurular
-        let apps = JSON.parse(localStorage.getItem('applications'));
-        let appHtml = '';
-        apps.forEach((a, index) => {
-            let badgeClass = a.status === 'Beklemede' ? 'status-beklemede' : (a.status === 'Kabul Edildi' ? 'status-acik' : 'status-red');
-            appHtml += `<div class="list-item">
-                <strong>Aday:</strong> ${a.user} | <span class="status-badge ${badgeClass}">${a.status}</span><br>
-                <div style="font-size:11px; color:#b9bbbe; max-height:60px; overflow-y:auto; margin:5px 0;">${a.text}</div>
-                <button class="btn success-btn" style="padding:4px; width:auto; font-size:11px;" onclick="basvuruDurum(${index}, 'Kabul Edildi')">Kabul Et</button>
-                <button class="btn danger-btn" style="padding:4px; width:auto; font-size:11px;" onclick="basvuruDurum(${index}, 'Reddedildi')">Reddet</button>
-                <button class="btn secondary-btn" style="padding:4px; width:auto; font-size:11px; float:right;" onclick="silApp(${index})">Sil</button>
-            </div>`;
-        });
-        document.getElementById('adminApps').innerHTML = appHtml || '<div class="list-item" style="color:#b9bbbe;">Başvuru yok.</div>';
-
-        // Ticket Yönetimi
-        let tickets = JSON.parse(localStorage.getItem('tickets'));
-        let tickHtml = '';
-        tickets.forEach((t, index) => {
-            let badgeClass = t.status === 'Açık' ? 'status-acik' : 'status-red';
-            let chatHtml = '';
-            t.messages.forEach(m => {
-                chatHtml += `<div><b>${m.sender}:</b> ${m.text}</div>`;
+        // Başvurular (Sadece Başvuru yetkilisi görebilir)
+        if(staffInfo.appStaff) {
+            document.getElementById('adminAppSection').style.display = 'block';
+            let apps = JSON.parse(localStorage.getItem('applications'));
+            let appHtml = '';
+            apps.forEach((a, index) => {
+                let badgeClass = a.status === 'Beklemede' ? 'status-beklemede' : (a.status === 'Kabul Edildi' ? 'status-acik' : 'status-red');
+                appHtml += `<div class="list-item">
+                    <strong>Aday:</strong> ${a.user} | <span class="status-badge ${badgeClass}">${a.status}</span><br>
+                    <div style="font-size:11px; color:#b9bbbe; max-height:60px; overflow-y:auto; margin:5px 0;">${a.text}</div>
+                    <button class="btn success-btn" style="padding:4px; width:auto; font-size:11px;" onclick="basvuruDurum(${index}, 'Kabul Edildi')">Kabul Et</button>
+                    <button class="btn danger-btn" style="padding:4px; width:auto; font-size:11px;" onclick="basvuruDurum(${index}, 'Reddedildi')">Reddet</button>
+                    <button class="btn secondary-btn" style="padding:4px; width:auto; font-size:11px; float:right;" onclick="silApp(${index})">Sil</button>
+                </div>`;
             });
+            document.getElementById('adminApps').innerHTML = appHtml || '<div class="list-item" style="color:#b9bbbe;">Başvuru yok.</div>';
+        } else {
+            document.getElementById('adminAppSection').style.display = 'none';
+        }
 
-            tickHtml += `<div class="list-item">
-                <strong>Açan:</strong> ${t.user} | <strong>[${t.category}]</strong> <span class="status-badge ${badgeClass}">${t.status}</span>
-                <div class="chat-box">${chatHtml}</div>
-                <div style="margin-top:5px;">
-                    <input type="text" id="staffMsg_${t.id}" placeholder="Yanıt yaz..." style="font-size:12px; padding:5px; margin-bottom:5px;">
-                    <button class="btn success-btn" style="padding:4px; width:auto; font-size:11px;" onclick="yetkiliMesajGonder(${t.id})">Yanıtla</button>
-                    <button class="btn warning-btn" style="padding:4px; width:auto; font-size:11px;" onclick="ticketKapat(${index})">Kapat</button>
-                    <button class="btn danger-btn" style="padding:4px; width:auto; font-size:11px; float:right;" onclick="silTicket(${index})">Sil</button>
-                </div>
-            </div>`;
-        });
-        document.getElementById('adminTickets').innerHTML = tickHtml || '<div class="list-item" style="color:#b9bbbe;">Ticket yok.</div>';
+        // Ticket Yönetimi (Sadece Ticket yetkilisi görebilir)
+        if(staffInfo.ticketStaff) {
+            document.getElementById('adminTicketSection').style.display = 'block';
+            let tickets = JSON.parse(localStorage.getItem('tickets'));
+            let tickHtml = '';
+            tickets.forEach((t, index) => {
+                let badgeClass = t.status === 'Açık' ? 'status-acik' : 'status-red';
+                let chatHtml = '';
+                t.messages.forEach(m => {
+                    chatHtml += `<div><b>${m.sender}:</b> ${m.text}</div>`;
+                });
+
+                tickHtml += `<div class="list-item">
+                    <strong>Açan:</strong> ${t.user} | <strong>[${t.category}]</strong> <span class="status-badge ${badgeClass}">${t.status}</span>
+                    <div class="chat-box">${chatHtml}</div>
+                    <div style="margin-top:5px;">
+                        <input type="text" id="staffMsg_${t.id}" placeholder="Yanıt yaz..." style="font-size:12px; padding:5px; margin-bottom:5px;">
+                        <button class="btn success-btn" style="padding:4px; width:auto; font-size:11px;" onclick="yetkiliMesajGonder(${t.id})">Yanıtla</button>
+                        <button class="btn warning-btn" style="padding:4px; width:auto; font-size:11px;" onclick="ticketKapat(${index})">Kapat</button>
+                        <button class="btn danger-btn" style="padding:4px; width:auto; font-size:11px; float:right;" onclick="silTicket(${index})">Sil</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('adminTickets').innerHTML = tickHtml || '<div class="list-item" style="color:#b9bbbe;">Ticket yok.</div>';
+        } else {
+            document.getElementById('adminTicketSection').style.display = 'none';
+        }
 
         sayfaGoster('adminDiv');
     }
 
-    function yetkiDegistir(username) {
-        let staffs = JSON.parse(localStorage.getItem('staffs'));
-        if(staffs.includes(username)) {
-            staffs = staffs.filter(s => s !== username);
-        } else {
-            staffs.push(username);
-        }
-        localStorage.setItem('staffs', JSON.stringify(staffs));
+    function yetkiDegistir(username, type) {
+        let map = JSON.parse(localStorage.getItem('staffsMap'));
+        if(!map[username]) map[username] = { ticketStaff: false, appStaff: false };
+        map[username][type] = !map[username][type];
+        localStorage.setItem('staffsMap', JSON.stringify(map));
         yoneticiPaneliAc();
     }
 
