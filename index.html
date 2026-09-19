@@ -6,11 +6,11 @@
     <title>CubixoraSMP - Panel</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #121212; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 90vh; }
-        .card { background: #1e1e1e; padding: 30px; border-radius: 10px; width: 100%; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        h1, h2 { color: #5865F2; text-align: center; }
+        .card { background: #1e1e1e; padding: 30px; border-radius: 10px; width: 100%; max-width: 550px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h1, h2, h3 { color: #5865F2; text-align: center; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; color: #b9bbbe; }
-        input[type="text"], input[type="password"], textarea { width: 100%; padding: 10px; background: #2b2d31; border: 1px solid #383a40; border-radius: 5px; color: white; box-sizing: border-box; }
+        input[type="text"], input[type="password"], textarea, select { width: 100%; padding: 10px; background: #2b2d31; border: 1px solid #383a40; border-radius: 5px; color: white; box-sizing: border-box; }
         .btn { width: 100%; background: #5865F2; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .btn:hover { background: #4752c4; }
         .secondary-btn { background: #4f545c; }
@@ -22,7 +22,10 @@
         .ip-box { background: #2f3136; padding: 10px; text-align: center; border-radius: 5px; margin-bottom: 15px; border: 1px dashed #5865F2; }
         .menu-btn { display: block; background: #2b2d31; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 5px; font-weight: bold; margin-bottom: 10px; }
         .menu-btn:hover { background: #5865F2; }
-        .list-item { background: #2f3136; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 14px; }
+        .list-item { background: #2f3136; padding: 12px; border-radius: 5px; margin-bottom: 10px; font-size: 14px; border-left: 4px solid #5865F2; }
+        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .status-acik { background: #248046; color: #fff; }
+        .status-kapali { background: #da373c; color: #fff; }
     </style>
 </head>
 <body>
@@ -69,7 +72,7 @@
         </div>
 
         <a href="#" class="menu-btn" onclick="sayfaGoster('formDiv')">📝 Yetkili Başvuru Formu</a>
-        <a href="#" class="menu-btn" onclick="ticketAcEkrani()">🎫 Destek (Ticket) Sistemi</a>
+        <a href="#" class="menu-btn" onclick="ticketAcEkrani()">🎫 Discord Tarzı Destek (Ticket)</a>
         <a href="https://discord.gg/5sXrrGkvz" target="_blank" class="menu-btn" style="background: #5865F2;">💬 Discord Sunucusu</a>
         <a href="#" id="adminBtn" class="menu-btn hidden" style="background: #faa61a; color: #000;" onclick="yoneticiPaneliAc()">⚙️ Yönetici Paneli</a>
 
@@ -86,12 +89,24 @@
         <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')">Geri Dön</button>
     </div>
 
-    <!-- TICKET -->
+    <!-- TICKET (KULLANICI) -->
     <div id="ticketDiv" class="hidden">
-        <h2>Destek Talepleri</h2>
-        <div class="form-group"><label>Sorununuz:</label><textarea id="tSubject" placeholder="Sorununuzu yazın..."></textarea></div>
+        <h2>🎫 Destek Talepleri</h2>
+        <div class="form-group">
+            <label>Konu / Kategori:</label>
+            <select id="tCategory">
+                <option value="Hata / Bug Bildirimi">Hata / Bug Bildirimi</option>
+                <option value="Oyuncu Şikayeti">Oyuncu Şikayeti</option>
+                <option value="Destek / Yardımlaşma">Destek / Yardımlaşma</option>
+                <option value="Diğer">Diğer</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Sorununuzun Detayı:</label>
+            <textarea id="tSubject" placeholder="Yaşadığınız sorunu detaylıca yazın..."></textarea>
+        </div>
         <button class="btn success-btn" onclick="ticketOlustur()">Talep Aç</button>
-        <div id="userTickets" style="margin-top: 15px;"></div>
+        <div id="userTickets" style="margin-top: 15px; max-height: 180px; overflow-y: auto;"></div>
         <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 10px;">Geri Dön</button>
     </div>
 
@@ -100,8 +115,8 @@
         <h2>Yönetici Paneli</h2>
         <h3>Başvurular</h3>
         <div id="adminApps" style="max-height: 120px; overflow-y: auto;"></div>
-        <h3 style="margin-top: 15px;">Ticketlar</h3>
-        <div id="adminTickets" style="max-height: 120px; overflow-y: auto;"></div>
+        <h3 style="margin-top: 15px;">🎫 Destek Talepleri (Ticket Yönetimi)</h3>
+        <div id="adminTickets" style="max-height: 180px; overflow-y: auto;"></div>
         <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 15px;">Geri Dön</button>
     </div>
 </div>
@@ -187,7 +202,7 @@
         let apps = JSON.parse(localStorage.getItem('applications'));
         apps.push({
             user: localStorage.getItem('currentUser'),
-            text: `Discord: ${document.getElementById('f1').value}, Yaş: ${document.getElementById('f2').value}`
+            text: `Discord: ${document.getElementById('f1').value}, Yaş: ${document.getElementById('f2').value}, Aktiflik: ${document.getElementById('f3').value}`
         });
         localStorage.setItem('applications', JSON.stringify(apps));
         alert('Başvuru gönderildi!');
@@ -195,12 +210,22 @@
     }
 
     function ticketOlustur() {
-        let sub = document.getElementById('tSubject').value;
-        if(!sub) { alert('Sorun yazın!'); return; }
+        let cat = document.getElementById('tCategory').value;
+        let sub = document.getElementById('tSubject').value.trim();
+        if(!sub) { alert('Lütfen sorununuzu detaylı yazın!'); return; }
+        
         let tickets = JSON.parse(localStorage.getItem('tickets'));
-        tickets.push({ user: localStorage.getItem('currentUser'), subject: sub });
+        tickets.push({ 
+            id: Date.now(),
+            user: localStorage.getItem('currentUser'), 
+            category: cat,
+            subject: sub,
+            status: 'Açık',
+            reply: 'Henüz yanıtlanmadı.'
+        });
         localStorage.setItem('tickets', JSON.stringify(tickets));
-        alert('Ticket açıldı!');
+        document.getElementById('tSubject').value = '';
+        alert('Destek talebiniz başarıyla açıldı!');
         ticketAcEkrani();
     }
 
@@ -208,8 +233,20 @@
         let tickets = JSON.parse(localStorage.getItem('tickets'));
         let currentUser = localStorage.getItem('currentUser');
         let myT = tickets.filter(t => t.user === currentUser);
+        
         let html = '<b>Talepleriniz:</b><br>';
-        myT.forEach(t => { html += `<div class="list-item">${t.subject}</div>`; });
+        if(myT.length === 0) {
+            html += '<div class="list-item" style="color: #b9bbbe;">Henüz aktif bir talebiniz yok.</div>';
+        } else {
+            myT.reverse().forEach(t => {
+                let badgeClass = t.status === 'Açık' ? 'status-acik' : 'status-kapali';
+                html += `<div class="list-item">
+                    <strong>[${t.category}]</strong> <span class="status-badge ${badgeClass}">${t.status}</span><br>
+                    <span style="color:#b9bbbe;">Soru:</span> ${t.subject}<br>
+                    <span style="color:#57f287;">Yetkili Yanıtı:</span> ${t.reply}
+                </div>`;
+            });
+        }
         document.getElementById('userTickets').innerHTML = html;
         sayfaGoster('ticketDiv');
     }
@@ -218,18 +255,42 @@
         let apps = JSON.parse(localStorage.getItem('applications'));
         let appHtml = '';
         apps.forEach((a, index) => {
-            appHtml += `<div class="list-item">${a.user}: ${a.text} <button class="btn danger-btn" style="padding:2px; width:auto;" onclick="silApp(${index})` + `">Sil</button></div>`;
+            appHtml += `<div class="list-item"><strong>${a.user}</strong>: ${a.text} <button class="btn danger-btn" style="padding:4px 8px; width:auto; float:right;" onclick="silApp(${index})">Sil</button></div>`;
         });
-        document.getElementById('adminApps').innerHTML = appHtml || 'Başvuru yok.';
+        document.getElementById('adminApps').innerHTML = appHtml || '<div class="list-item" style="color:#b9bbbe;">Başvuru yok.</div>';
 
         let tickets = JSON.parse(localStorage.getItem('tickets'));
         let tickHtml = '';
         tickets.forEach((t, index) => {
-            tickHtml += `<div class="list-item">${t.user}: ${t.subject} <button class="btn danger-btn" style="padding:2px; width:auto;" onclick="silTicket(${index})` + `">Sil</button></div>`;
+            let badgeClass = t.status === 'Açık' ? 'status-acik' : 'status-kapali';
+            tickHtml += `<div class="list-item">
+                <strong>Kullanıcı:</strong> ${t.user} | <strong>[${t.category}]</strong> <span class="status-badge ${badgeClass}">${t.status}</span><br>
+                <strong>Talep:</strong> ${t.subject}<br>
+                <div style="margin-top:8px;">
+                    <input type="text" id="adminReply_${index}" placeholder="Yetkili yanıtı yaz..." value="${t.reply === 'Henüz yanıtlanmadı.' ? '' : t.reply}" style="margin-bottom:5px; padding:6px;">
+                    <button class="btn success-btn" style="padding:5px; width:auto; font-size:12px;" onclick="biletGuncelle(${index}, 'Yanıtla')">Yanıtla</button>
+                    <button class="btn secondary-btn" style="padding:5px; width:auto; font-size:12px;" onclick="biletGuncelle(${index}, 'Kapat')">Kapat / Çözüldü</button>
+                    <button class="btn danger-btn" style="padding:5px; width:auto; font-size:12px; float:right;" onclick="silTicket(${index})">Sil</button>
+                </div>
+            </div>`;
         });
-        document.getElementById('adminTickets').innerHTML = tickHtml || 'Ticket yok.';
+        document.getElementById('adminTickets').innerHTML = tickHtml || '<div class="list-item" style="color:#b9bbbe;">Ticket yok.</div>';
 
         sayfaGoster('adminDiv');
+    }
+
+    function biletGuncelle(i, aksiyon) {
+        let tickets = JSON.parse(localStorage.getItem('tickets'));
+        if (aksiyon === 'Yanıtla') {
+            let replyText = document.getElementById(`adminReply_${i}`).value.trim();
+            if(!replyText) { alert('Lütfen bir yanıt yazın!'); return; }
+            tickets[i].reply = replyText;
+            tickets[i].status = 'Açık';
+        } else if (aksiyon === 'Kapat') {
+            tickets[i].status = 'Kapandı (Çözüldü)';
+        }
+        localStorage.setItem('tickets', JSON.stringify(tickets));
+        yoneticiPaneliAc();
     }
 
     function silApp(i) {
