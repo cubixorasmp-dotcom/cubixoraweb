@@ -30,7 +30,7 @@
         .status-red { background: #da373c; color: #fff; }
         .chat-box { background: #18191c; padding: 8px; border-radius: 5px; max-height: 120px; overflow-y: auto; margin-top: 8px; margin-bottom: 8px; font-size: 12px; word-break: break-word; }
         .scrollable-form { max-height: 400px; overflow-y: auto; padding-right: 5px; }
-        .staff-row { background: #222327; padding: 10px; border-radius: 5px; margin-top: 10px; }
+        .staff-row { background: #222327; padding: 10px; border-radius: 5px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
     </style>
 </head>
 <body>
@@ -57,7 +57,7 @@
     <!-- MENÜ -->
     <div id="menuDiv" class="hidden">
         <h2>Hoş Geldin, <span id="welcomeUser" style="color: #5865F2;"></span></h2>
-        <div id="adminTag" class="hidden" style="text-align: center; color: #faa61a; font-weight: bold; margin-bottom: 10px;">⭐ [Yetkili / Yönetici] ⭐</div>
+        <div id="adminTag" class="hidden" style="text-align: center; color: #faa61a; font-weight: bold; margin-bottom: 10px;">⭐ [Yetkili] ⭐</div>
         
         <div class="ip-box">
             <p style="margin: 0 0 5px 0; color: #b9bbbe; font-size: 13px;">Sunucu IP:</p>
@@ -161,7 +161,7 @@
 
     <!-- YÖNETİCİ / YETKİLİ PANELİ -->
     <div id="adminDiv" class="hidden">
-        <h2>Yetkili / Yönetim Paneli</h2>
+        <h2>Yetkili Yönetim Paneli</h2>
         
         <!-- SADECE AZELORD077 GÖRECEK: KASA VE PARA ÇEKME BÖLÜMÜ -->
         <div id="azelordBalanceBox" class="hidden" style="background: #183823; border: 2px solid #248046; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
@@ -173,10 +173,27 @@
             </div>
         </div>
 
-        <!-- SADECE AZELORD077 GÖRECEK: YETKİ VERME BÖLÜMÜ -->
-        <div id="azelordStaffManageBox" class="hidden" style="margin-bottom: 15px;">
-            <h3 style="color: #faa61a;">⭐ Yetkili Atama Paneli (Sadece AZELORD077)</h3>
-            <div id="userManageBox" class="form-group" style="background:#2f3136; padding:10px; border-radius:5px;"></div>
+        <!-- SADECE AZELORD077 GÖRECEK: İSİM YAZARAK YETKİ VERME BÖLÜMÜ -->
+        <div id="azelordStaffManageBox" class="hidden" style="background: #2f3136; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+            <h3 style="color: #faa61a; margin-top: 0;">⭐ İsimle Yetkili Ekle (Sadece AZELORD077)</h3>
+            <div class="form-group">
+                <label>Kullanıcı Adı:</label>
+                <input type="text" id="manuelStaffName" placeholder="Yetki verilecek kişinin kullanıcı adını yazın">
+            </div>
+            <div class="form-group">
+                <label>Yetki Rolü Seçin:</label>
+                <select id="manuelStaffRole">
+                    <option value="Site Yetkilisi">Site Yetkilisi</option>
+                    <option value="BoxPvP Yetkilisi">BoxPvP Yetkilisi</option>
+                    <option value="Towny Yetkilisi">Towny Yetkilisi</option>
+                    <option value="Rehber">Rehber</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+            <button class="btn success-btn" onclick="manuelYetkiVer()">Bu İsme Yetki Ver</button>
+            
+            <h4 style="margin-bottom: 5px; margin-top: 15px; color: #b9bbbe;">Mevcut Yetkili Listesi:</h4>
+            <div id="activeStaffsList" style="max-height: 150px; overflow-y: auto;"></div>
         </div>
         
         <div id="adminAppSection">
@@ -414,7 +431,6 @@
             return;
         }
 
-        // Mağaza kasasına parayı ekle
         let currentBal = parseFloat(localStorage.getItem('storeBalance')) || 0;
         currentBal += secilenFiyat;
         localStorage.setItem('storeBalance', currentBal.toString());
@@ -433,7 +449,7 @@
         let hedef = prompt(`Mevcut Kasadaki Tutar: ${bakiye} TL\nParayı çekmek istediğiniz IBAN veya Papara numaranızı girin:`);
         if(hedef) {
             alert(`Para çekme talebiniz alındı!\n${bakiye} TL tutarındaki ödeme "${hedef}" hesabınıza gönderilmek üzere kuyruğa eklendi.`);
-            localStorage.setItem('storeBalance', '0'); // Kasayı sıfırla
+            localStorage.setItem('storeBalance', '0');
             yoneticiPaneliAc();
         }
     }
@@ -454,7 +470,7 @@
         let currentUser = localStorage.getItem('currentUser');
         let staffInfo = getStaffInfo(currentUser);
         
-        // KONTROL: SADECE AZELORD077 KASAYI VE YETKİ VERMEYİ GÖREBİLİR!
+        // KONTROL: SADECE AZELORD077 KASAYI VE İSİMLE YETKİ VERMEYİ GÖREBİLİR!
         if(currentUser === 'AZELORD077') {
             document.getElementById('azelordBalanceBox').classList.remove('hidden');
             document.getElementById('azelordStaffManageBox').classList.remove('hidden');
@@ -462,30 +478,17 @@
             let totalBal = localStorage.getItem('storeBalance') || '0';
             document.getElementById('totalBalanceText').innerText = totalBal + ' TL';
 
-            let users = JSON.parse(localStorage.getItem('users'));
             let map = JSON.parse(localStorage.getItem('staffsMap'));
-            let uBox = '<b>Kullanıcıya Seçmeli Yetki Ver / Kaldır:</b><br>';
-            
-            users.forEach(u => {
-                let info = map[u.username];
-                uBox += `<div class="staff-row">
-                    <span style="font-weight: bold; word-break: break-all;">👤 ${u.username}</span>
-                    <div style="margin-top:5px; display:flex; gap:5px; flex-wrap:wrap; align-items:center;">
-                        <select id="roleSelect_${u.username}" style="flex:1; padding:5px; font-size:12px;">
-                            <option value="BoxPvP Yetkilisi">BoxPvP Yetkilisi</option>
-                            <option value="Towny Yetkilisi">Towny Yetkilisi</option>
-                            <option value="Rehber">Rehber</option>
-                            <option value="Admin">Admin</option>
-                        </select>
-                        ${info ? `<button class="btn danger-btn" style="padding:6px 10px; width:auto; font-size:11px; margin:0;" onclick="yetkiKkaldir('${u.username}')">Yetkiyi Kaldır</button>` : 
-                                 `<button class="btn success-btn" style="padding:6px 10px; width:auto; font-size:11px; margin:0;" onclick="yetkiVer('${u.username}')">Yetki Ver</button>`}
-                    </div>
-                    ${info ? `<div style="font-size:11px; color:#57f287; margin-top:4px;">Aktif Yetki: ${info.role}</div>` : ''}
+            let listHtml = '';
+            for(let usr in map) {
+                if(usr === 'AZELORD077') continue; // Kurucuyu listeden silip kaldırmasın
+                listHtml += `<div class="staff-row">
+                    <span>👤 <b>${usr}</b> <span style="color:#57f287; font-size:11px;">(${map[usr].role})</span></span>
+                    <button class="btn danger-btn" style="padding:4px 8px; width:auto; font-size:11px; margin:0;" onclick="yetkiKaldir('${usr}')">Yetkiyi Al</button>
                 </div>`;
-            });
-            document.getElementById('userManageBox').innerHTML = uBox;
+            }
+            document.getElementById('activeStaffsList').innerHTML = listHtml || '<div style="color:#b9bbbe; font-size:12px;">Ek yetkili yok.</div>';
         } else {
-            // AZELORD077 DEĞİLSE BU ALANLAR GİZLİ KALIR
             document.getElementById('azelordBalanceBox').classList.add('hidden');
             document.getElementById('azelordStaffManageBox').classList.add('hidden');
         }
@@ -540,15 +543,25 @@
         sayfaGoster('adminDiv');
     }
 
-    function yetkiVer(username) {
-        let selectVal = document.getElementById(`roleSelect_${username}`).value;
+    function manuelYetkiVer() {
+        let uName = document.getElementById('manuelStaffName').value.trim();
+        let uRole = document.getElementById('manuelStaffRole').value;
+
+        if(!uName) {
+            alert('Lütfen yetki verilecek kişinin kullanıcı adını yazın!');
+            return;
+        }
+
         let map = JSON.parse(localStorage.getItem('staffsMap'));
-        map[username] = { role: selectVal };
+        map[uName] = { role: uRole };
         localStorage.setItem('staffsMap', JSON.stringify(map));
+        
+        document.getElementById('manuelStaffName').value = '';
+        alert(`"${uName}" kullanıcısına başarıyla "${uRole}" yetkisi verildi!`);
         yoneticiPaneliAc();
     }
 
-    function yetkiKkaldir(username) {
+    function yetkiKaldir(username) {
         let map = JSON.parse(localStorage.getItem('staffsMap'));
         delete map[username];
         localStorage.setItem('staffsMap', JSON.stringify(map));
