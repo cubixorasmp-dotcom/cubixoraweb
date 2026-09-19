@@ -20,7 +20,8 @@
         .success-btn:hover { background: #1a6335; }
         .danger-btn { background: #da373c; }
         .danger-btn:hover { background: #a1282c; }
-        .hidden { display: none !important; }
+        .section-view { display: none; }
+        .section-view.active { display: block; }
         .ip-box { background: #2f3136; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 20px; border: 1px dashed #5865F2; }
         .menu-grid { display: grid; gap: 10px; }
         .menu-btn { display: block; background: #2b2d31; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 6px; font-weight: bold; border: 1px solid #383a40; transition: 0.2s; }
@@ -38,7 +39,7 @@
 
 <div class="card">
     <!-- GİRİŞ EKRANI -->
-    <div id="loginSection">
+    <div id="loginSection" class="section-view active">
         <h1>CubixoraSMP Giriş</h1>
         <div class="form-group">
             <label>Kullanıcı Adı:</label>
@@ -49,11 +50,11 @@
             <input type="password" id="loginPass" placeholder="Şifrenizi girin">
         </div>
         <button class="btn" onclick="handleLogin()">Giriş Yap</button>
-        <div class="toggle-text" onclick="switchView('register')">Hesabın yok mu? <span>Kayıt Ol</span></div>
+        <div class="toggle-text" onclick="switchView('registerSection')">Hesabın yok mu? <span>Kayıt Ol</span></div>
     </div>
 
     <!-- KAYIT EKRANI -->
-    <div id="registerSection" class="hidden">
+    <div id="registerSection" class="section-view">
         <h1>CubixoraSMP Kayıt</h1>
         <div class="form-group">
             <label>Kullanıcı Adı:</label>
@@ -64,13 +65,13 @@
             <input type="password" id="regPass" placeholder="Şifre belirleyin">
         </div>
         <button class="btn" onclick="handleRegister()">Kayıt Ol</button>
-        <div class="toggle-text" onclick="switchView('login')">Zaten hesabın var mı? <span>Giriş Yap</span></div>
+        <div class="toggle-text" onclick="switchView('loginSection')">Zaten hesabın var mı? <span>Giriş Yap</span></div>
     </div>
 
     <!-- ANA MENÜ EKRANI -->
-    <div id="menuSection" class="hidden">
+    <div id="menuSection" class="section-view">
         <h2>Hoş Geldin, <span id="displayName" style="color: #5865F2;"></span>!</h2>
-        <div id="adminBadge" class="hidden" style="text-align: center; color: #faa61a; font-weight: bold; margin-bottom: 10px;">⭐ [AZELORD077 Yetkili Modu Aktif] ⭐</div>
+        <div id="adminBadge" class="section-view" style="text-align: center; color: #faa61a; font-weight: bold; margin-bottom: 10px;">⭐ [AZELORD077 Yetkili Modu Aktif] ⭐</div>
         
         <div class="ip-box">
             <p style="margin: 0 0 5px 0; color: #b9bbbe; font-size: 14px;">Sunucu IP Adresi:</p>
@@ -82,16 +83,16 @@
             <a href="#" class="menu-btn" onclick="openForm(event)" id="menuFormBtn">📝 Yetkili / Rehber Başvurusu</a>
             <a href="#" class="menu-btn" onclick="openTicket(event)">🎫 Destek (Ticket) Sistemi</a>
             <a href="https://discord.gg/5sXrrGkvz" target="_blank" class="menu-btn discord-btn">💬 Discord Sunucumuza Katıl</a>
-            <a href="#" class="menu-btn hidden" id="adminMenuBtn" style="background: #faa61a; color: #000;" onclick="openAdminPanel(event)">⚙️ Yönetici / Yetkili Paneli</a>
+            <a href="#" class="menu-btn section-view" id="adminMenuBtn" style="background: #faa61a; color: #000;" onclick="openAdminPanel(event)">⚙️ Yönetici / Yetkili Paneli</a>
         </div>
 
         <button class="btn secondary-btn" onclick="handleLogout()" style="margin-top: 20px;">Çıkış Yap</button>
     </div>
 
     <!-- BAŞVURU FORMU EKRANI -->
-    <div id="formSection" class="hidden">
+    <div id="formSection" class="section-view">
         <h2>Rehber Başvuru Formu</h2>
-        <div id="formClosedMsg" class="hidden" style="color: #da373c; text-align: center; font-weight: bold; margin-bottom: 15px;">Şu anda başvurular yönetici tarafından kapatılmıştır!</div>
+        <div id="formClosedMsg" class="section-view" style="color: #da373c; text-align: center; font-weight: bold; margin-bottom: 15px;">Şu anda başvurular yönetici tarafından kapatılmıştır!</div>
         <form id="appForm" onsubmit="submitApplication(event)">
             <div class="question"><label>1. Discord Adınız:</label><input type="text" id="app1" required></div>
             <div class="question"><label>2. Yaşınız:</label><input type="text" id="app2" required></div>
@@ -103,7 +104,7 @@
     </div>
 
     <!-- TICKET EKRANI -->
-    <div id="ticketSection" class="hidden">
+    <div id="ticketSection" class="section-view">
         <h2>Destek (Ticket) Sistemi</h2>
         <div id="userTicketArea">
             <div class="form-group">
@@ -117,7 +118,7 @@
     </div>
 
     <!-- YÖNETİCİ PANELİ EKRANI -->
-    <div id="adminSection" class="hidden">
+    <div id="adminSection" class="section-view">
         <h2>⚙️ Yönetici Kontrol Paneli</h2>
         
         <div class="admin-panel-box">
@@ -137,7 +138,7 @@
     </div>
 
     <!-- MAĞAZA EKRANI -->
-    <div id="storeSection" class="hidden">
+    <div id="storeSection" class="section-view">
         <h2>Sunucu Mağazası</h2>
         <div class="ip-box">
             <p>VIP üyelikler ve özel avantajlar yakında aktif olacaktır!</p>
@@ -152,11 +153,14 @@
     if(!localStorage.getItem('applications')) { localStorage.setItem('applications', JSON.stringify([])); }
     if(!localStorage.getItem('tickets')) { localStorage.setItem('tickets', JSON.stringify([])); }
 
-    function switchView(view) {
-        ['loginSection', 'registerSection', 'menuSection', 'formSection', 'ticketSection', 'adminSection', 'storeSection'].forEach(id => {
-            document.getElementById(id).classList.add('hidden');
+    function switchView(viewId) {
+        document.querySelectorAll('.section-view').forEach(el => {
+            el.classList.remove('active');
         });
-        document.getElementById(view).classList.remove('hidden');
+        const target = document.getElementById(viewId);
+        if(target) {
+            target.classList.add('active');
+        }
     }
 
     function handleRegister() {
@@ -164,7 +168,6 @@
         const pass = document.getElementById('regPass').value;
         if(!user || !pass) { alert('Lütfen tüm alanları doldurun!'); return; }
         
-        // AZELORD077 ismiyle normal kayıt olunamaz, o özel yöneticidir
         if(user.toLowerCase() === 'azelord077') {
             alert('Bu yönetici adı kayıt ekranından alınamaz! Lütfen giriş yapın.');
             return;
@@ -172,7 +175,6 @@
 
         let users = JSON.parse(localStorage.getItem('users'));
         
-        // Aynı isimde kullanıcı var mı kontrol et
         const existingUser = users.find(u => u.username.toLowerCase() === user.toLowerCase());
         if(existingUser) {
             alert('Bu kullanıcı adı zaten alınmış! Lütfen başka bir isim deneyin.');
@@ -182,20 +184,19 @@
         users.push({ username: user, password: pass });
         localStorage.setItem('users', JSON.stringify(users));
         alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
-        switchView('login');
+        switchView('loginSection');
     }
 
     function handleLogin() {
         const user = document.getElementById('loginUser').value.trim();
         const pass = document.getElementById('loginPass').value;
         
-        // AZELORD077 ve şifresi 12345677ee için özel yönetici girişi
         if(user === 'AZELORD077' && pass === '12345677ee') {
             localStorage.setItem('currentUser', 'AZELORD077');
             localStorage.setItem('isAdmin', 'true');
             initUserSession();
             return;
-        } else if(user === 'AZELORD077') {
+        } else if(user.toLowerCase() === 'azelord077') {
             alert('AZELORD077 için şifre hatalı!');
             return;
         }
@@ -218,38 +219,44 @@
 
         document.getElementById('displayName').innerText = currentUser;
         
+        const adminBadge = document.getElementById('adminBadge');
+        const adminMenuBtn = document.getElementById('adminMenuBtn');
+
         if(isAdmin || currentUser === 'AZELORD077') {
-            document.getElementById('adminBadge').classList.remove('hidden');
-            document.getElementById('adminMenuBtn').classList.remove('hidden');
+            adminBadge.classList.add('active');
+            adminMenuBtn.classList.add('active');
         } else {
-            document.getElementById('adminBadge').classList.add('hidden');
-            document.getElementById('adminMenuBtn').classList.add('hidden');
+            adminBadge.classList.remove('active');
+            adminMenuBtn.classList.remove('active');
         }
-        switchView('menu');
+        switchView('menuSection');
     }
 
     function handleLogout() {
         localStorage.removeItem('currentUser');
         localStorage.removeItem('isAdmin');
-        switchView('login');
+        switchView('loginSection');
     }
 
     function openForm(e) {
         e.preventDefault();
         const isOpen = localStorage.getItem('formOpen') === 'true';
+        const formClosedMsg = document.getElementById('formClosedMsg');
+        const submitAppBtn = document.getElementById('submitAppBtn');
+
         if(!isOpen && localStorage.getItem('isAdmin') !== 'true') {
-            document.getElementById('formClosedMsg').classList.remove('hidden');
-            document.getElementById('submitAppBtn').classList.add('hidden');
+            formClosedMsg.classList.add('active');
+            submitAppBtn.style.display = 'none';
         } else {
-            document.getElementById('formClosedMsg').classList.add('hidden');
-            document.getElementById('submitAppBtn').classList.remove('hidden');
+            formClosedMsg.classList.remove('active');
+            submitAppBtn.style.display = 'block';
         }
-        switchView('form');
+        switchView('formSection');
     }
 
-    function openTicket(e) { e.preventDefault(); loadUserTickets(); switchView('ticket'); }
-    function openStore(e) { e.preventDefault(); switchView('store'); }
-    function backToMenu() { switchView('menu'); }
+    function openTicket(e) { e.preventDefault(); loadUserTickets(); switchView('ticketSection'); }
+    function openStore(e) { e.preventDefault(); switchView('storeSection'); }
+    function backToMenu() { switchView('menuSection'); }
 
     function submitApplication(e) {
         e.preventDefault();
@@ -269,7 +276,7 @@
         localStorage.setItem('applications', JSON.stringify(apps));
         alert('Başvurunuz başarıyla gönderildi!');
         document.getElementById('appForm').reset();
-        switchView('menu');
+        switchView('menuSection');
     }
 
     function toggleFormStatus() {
@@ -281,7 +288,7 @@
     function openAdminPanel(e) {
         e.preventDefault();
         updateAdminPanelUI();
-        switchView('admin');
+        switchView('adminSection');
     }
 
     function updateAdminPanelUI() {
