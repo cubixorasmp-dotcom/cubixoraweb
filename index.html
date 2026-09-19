@@ -3,67 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sunucu Başvuru ve Rehber Sistemi</title>
+    <title>CubixoraSMP - Gelişmiş Panel & Ticket Sistemi</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: #1e1e1e; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        h1, h2 { color: #5865F2; text-align: center; }
-        .info-box { background: #2f3136; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; }
-        .btn { display: inline-block; background: #5865F2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 5px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: #e0e0e0; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 90vh; }
+        .card { background: #1e1e1e; padding: 30px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); width: 100%; max-width: 600px; box-sizing: border-box; }
+        h1, h2, h3 { color: #5865F2; text-align: center; margin-top: 0; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #b9bbbe; }
+        input[type="text"], input[type="password"], textarea { width: 100%; padding: 12px; background: #2b2d31; border: 1px solid #383a40; border-radius: 6px; color: white; box-sizing: border-box; font-size: 14px; }
+        input:focus, textarea:focus { border-color: #5865F2; outline: none; }
+        .btn { width: 100%; background: #5865F2; color: white; border: none; padding: 12px; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px; transition: background 0.2s; }
         .btn:hover { background: #4752c4; }
+        .secondary-btn { background: #4f545c; margin-top: 5px; }
+        .secondary-btn:hover { background: #686d73; }
+        .success-btn { background: #248046; }
+        .success-btn:hover { background: #1a6335; }
+        .danger-btn { background: #da373c; }
+        .danger-btn:hover { background: #a1282c; }
+        .hidden { display: none !important; }
+        .ip-box { background: #2f3136; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 20px; border: 1px dashed #5865F2; }
+        .menu-grid { display: grid; gap: 10px; }
+        .menu-btn { display: block; background: #2b2d31; color: #fff; padding: 12px; text-align: center; text-decoration: none; border-radius: 6px; font-weight: bold; border: 1px solid #383a40; transition: 0.2s; }
+        .menu-btn:hover { background: #5865F2; border-color: #5865F2; }
+        .discord-btn { background: #5865F2; }
+        .toggle-text { text-align: center; margin-top: 15px; font-size: 14px; color: #b9bbbe; cursor: pointer; }
+        .toggle-text span { color: #5865F2; font-weight: bold; }
+        .toggle-text span:hover { text-decoration: underline; }
         .question { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], textarea { width: 100%; padding: 10px; background: #2b2d31; border: 1px solid #383a40; border-radius: 5px; color: white; box-sizing: border-box; }
-        textarea { resize: vertical; height: 80px; }
-        button[type="submit"] { background: #248046; color: white; border: none; padding: 12px 20px; width: 100%; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 20px; }
-        button[type="submit"]:hover { background: #1a6335; }
+        .admin-panel-box { background: #2b2d31; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #faa61a; }
+        .list-item { background: #2f3136; padding: 10px; border-radius: 6px; margin-bottom: 10px; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🚀 Sunucu Başvuru Portalı</h1>
-    
-    <div class="info-box">
-        <p><strong>Sunucu IP Adresi:</strong> <code>oyna.sunucunuz.com</code></p>
-        <a href="https://discord.gg/senin-discord-davetin" target="_blank" class="btn">Discord Sunucumuza Katıl</a>
+<div class="card">
+    <!-- GİRİŞ EKRANI -->
+    <div id="loginSection">
+        <h1>CubixoraSMP Giriş</h1>
+        <div class="form-group">
+            <label>Kullanıcı Adı:</label>
+            <input type="text" id="loginUser" placeholder="Kullanıcı adınızı girin (Yönetici için: AZELORD077)">
+        </div>
+        <div class="form-group">
+            <label>Şifre:</label>
+            <input type="password" id="loginPass" placeholder="Şifrenizi girin">
+        </div>
+        <button class="btn" onclick="handleLogin()">Giriş Yap</button>
+        <div class="toggle-text" onclick="switchView('register')">Hesabın yok mu? <span>Kayıt Ol</span></div>
     </div>
 
-    <h2>Rehber & Yetkili Başvuru Formu</h2>
-    <form id="applicationForm">
-        
-        <!-- 20 Soruluk Alan -->
-        <div class="question"><label>1. Adınız ve Soyadınız (veya Discord adınız):</label><input type="text" required></div>
-        <div class="question"><label>2. Yaşınız kaç?</label><input type="text" required></div>
-        <div class="question"><label>3. Günlük aktiflik süreniz kaç saat?</label><input type="text" required></div>
-        <div class="question"><label>4. Daha önce başka bir sunucuda görev yaptınız mı? Hangileri?</label><textarea required></textarea></div>
-        <div class="question"><label>5. Neden sizi seçmeliyiz?</label><textarea required></textarea></div>
-        <div class="question"><label>6. Oyuncular arasında bir tartışma çıkarsa ilk hamlen ne olur?</label><textarea required></textarea></div>
-        <div class="question"><label>7. Komut bilgisi seviyeniz 10 üzerinden kaç?</label><input type="text" required></div>
-        <div class="question"><label>8. Küfür veya hakaret eden bir kullanıcıya hangi cezayı uygularsın?</label><textarea required></textarea></div>
-        <div class="question"><label>9. Sunucu kurallarını okudunuz mu?</label><input type="text" required></div>
-        <div class="question"><label>10. Mikrofonunuz var mı ve aktif olarak kullanabiliyor musunuz?</label><input type="text" required></div>
-        <div class="question"><label>11. Yetkiyi kötüye kullanmanın cezası nedir sizce?</label><textarea required></textarea></div>
-        <div class="question"><label>12. Ekip çalışmasına yatkın mısınız?</label><input type="text" required></div>
-        <div class="question"><label>13. Oyuncularla iletişiminiz nasıldır?</label><textarea required></textarea></div>
-        <div class="question"><label>14. Hile kullanan bir oyuncu görürseniz ne yaparsınız?</label><textarea required></textarea></div>
-        <div class="question"><label>15. Sunucumuzun gelişi için önerileriniz nelerdir?</label><textarea required></textarea></div>
-        <div class="question"><label>16. Kriz anlarında (sunucu çökmesi vb.) nasıl tepki verirsiniz?</label><textarea required></textarea></div>
-        <div class="question"><label>17. Discord rollerini ve yetkilerini ne kadar iyi biliyorsunuz?</label><textarea required></textarea></div>
-        <div class="question"><label>18. Yetkili olduğunuzda önceliğiniz ne olacak?</label><textarea required></textarea></div>
-        <div class="question"><label>19. Kendinizde gördüğünüz en büyük eksi yön nedir?</label><textarea required></textarea></div>
-        <div class="question"><label>20. Ekibimize katıldığınızda sunucuya ne gibi katkılar sağlayabilirsiniz?</label><textarea required></textarea></div>
+    <!-- KAYIT EKRANI -->
+    <div id="registerSection" class="hidden">
+        <h1>CubixoraSMP Kayıt</h1>
+        <div class="form-group">
+            <label>Kullanıcı Adı:</label>
+            <input type="text" id="regUser" placeholder="Kullanıcı adı seçin">
+        </div>
+        <div class="form-group">
+            <label>Şifre:</label>
+            <input type="password" id="regPass" placeholder="Şifre belirleyin">
+        </div>
+        <button class="btn" onclick="handleRegister()">Kayıt Ol</button>
+        <div class="toggle-text" onclick="switchView('login')">Zaten hesabın var mı? <span>Giriş Yap</span></div>
+    </div>
 
-        <button type="submit">Başvuruyu Gönder</button>
-    </form>
+    <!-- ANA MENÜ EKRANI -->
+    <div id="menuSection" class="hidden">
+        <h2>Hoş Geldin, <span id="displayName" style="color: #5865F2;"></span>!</h2>
+        <div id="adminBadge" class="hidden" style="text-align: center; color: #faa61a; font-weight: bold; margin-bottom: 10px;">⭐ [AZELORD077 Yetkili Modu Aktif] ⭐</div>
+        
+        <div class="ip-box">
+            <p style="margin: 0 0 5px 0; color: #b9bbbe; font-size: 14px;">Sunucu IP Adresi:</p>
+            <code style="font-size: 18px; color: #57f287; font-weight: bold;">Cubixorasmp.play.hosting</code>
+        </div>
+
+        <div class="menu-grid">
+            <a href="#" class="menu-btn" onclick="openStore(event)">🛒 Mağaza (VIP & Ürünler)</a>
+            <a href="#" class="menu-btn" onclick="openForm(event)" id="menuFormBtn">📝 Yetkili / Rehber Başvurusu</a>
+            <a href="#" class="menu-btn" onclick="openTicket(event)">🎫 Destek (Ticket) Sistemi</a>
+            <a href="https://discord.gg/5sXrrGkvz" target="_blank" class="menu-btn discord-btn">💬 Discord Sunucumuza Katıl</a>
+            <a href="#" class="menu-btn hidden" id="adminMenuBtn" style="background: #faa61a; color: #000;" onclick="openAdminPanel(event)">⚙️ Yönetici / Yetkili Paneli</a>
+        </div>
+
+        <button class="btn secondary-btn" onclick="handleLogout()" style="margin-top: 20px;">Çıkış Yap</button>
+    </div>
+
+    <!-- BAŞVURU FORMU EKRANI -->
+    <div id="formSection" class="hidden">
+        <h2>Rehber Başvuru Formu</h2>
+        <div id="formClosedMsg" class="hidden" style="color: #da373c; text-align: center; font-weight: bold; margin-bottom: 15px;">Şu anda başvurular yönetici tarafından kapatılmıştır!</div>
+        <form id="appForm" onsubmit="submitApplication(event)">
+            <div class="question"><label>1. Discord Adınız:</label><input type="text" id="app1" required></div>
+            <div class="question"><label>2. Yaşınız:</label><input type="text" id="app2" required></div>
+            <div class="question"><label>3. Günlük Aktiflik Süreniz:</label><input type="text" id="app3" required></div>
+            <div class="question"><label>4. Neden yetkili olmak istiyorsunuz?</label><textarea id="app4" required></textarea></div>
+            <button type="submit" class="btn" id="submitAppBtn">Başvuruyu Gönder</button>
+            <button type="button" class="btn secondary-btn" onclick="backToMenu()">Menüye Dön</button>
+        </form>
+    </div>
+
+    <!-- TICKET EKRANI -->
+    <div id="ticketSection" class="hidden">
+        <h2>Destek (Ticket) Sistemi</h2>
+        <div id="userTicketArea">
+            <div class="form-group">
+                <label>Sorununuz / Konu:</label>
+                <textarea id="ticketSubject" placeholder="Yaşadığınız sorunu kısaca yazın..."></textarea>
+            </div>
+            <button class="btn success-btn" onclick="createTicket()">Destek Talebi Aç</button>
+        </div>
+        <div id="myTicketsList" style="margin-top: 15px;"></div>
+        <button class="btn secondary-btn" onclick="backToMenu()" style="margin-top: 15px;">Menüye Dön</button>
+    </div>
+
+    <!-- YÖNETİCİ PANELİ EKRANI (AZELORD077 & Yetkililer için) -->
+    <div id="adminSection" class="hidden">
+        <h2>⚙️ Yönetici Kontrol Paneli</h2>
+        
+        <div class="admin-panel-box">
+            <h3>Başvuru Kontrolü</h3>
+            <p>Durum: <span id="formStatusText" style="color: #248046; font-weight: bold;">Açık</span></p>
+            <button class="btn danger-btn" id="toggleFormBtn" onclick="toggleFormStatus()">Başvuruları Kapat</button>
+            <h4 style="margin-top: 15px;">Gelen Başvurular:</h4>
+            <div id="adminApplicationsList" style="max-height: 150px; overflow-y: auto;"></div>
+        </div>
+
+        <div class="admin-panel-box">
+            <h3>Destek Talepleri (Tickets)</h3>
+            <div id="adminTicketsList" style="max-height: 150px; overflow-y: auto;"></div>
+        </div>
+
+        <button class="btn secondary-btn" onclick="backToMenu()" style="margin-top: 15px;">Menüye Dön</button>
+    </div>
+
+    <!-- MAĞAZA EKRANI -->
+    <div id="storeSection" class="hidden">
+        <h2>Sunucu Mağazası</h2>
+        <div class="ip-box">
+            <p>VIP üyelikler ve özel avantajlar yakında aktif olacaktır!</p>
+        </div>
+        <button class="btn secondary-btn" onclick="backToMenu()">Menüye Dön</button>
+    </div>
 </div>
 
 <script>
-    document.getElementById('applicationForm').addEventListener('submit', function(e) {
+    // Başlangıç Verileri localStorage'dan çekilir
+    if(localStorage.getItem('formOpen') === null) { localStorage.setItem('formOpen', 'true'); }
+    if(!localStorage.getItem('applications')) { localStorage.setItem('applications', JSON.stringify([])); }
+    if(!localStorage.getItem('tickets')) { localStorage.setItem('tickets', JSON.stringify([])); }
+
+    function switchView(view) {
+        ['loginSection', 'registerSection', 'menuSection', 'formSection', 'ticketSection', 'adminSection', 'storeSection'].forEach(id => {
+            document.getElementById(id).classList.add('hidden');
+        });
+        document.getElementById(view).classList.remove('hidden');
+    }
+
+    function handleRegister() {
+        const user = document.getElementById('regUser').value;
+        const pass = document.getElementById('regPass').value;
+        if(!user || !pass) { alert('Lütfen tüm alanları doldurun!'); return; }
+        
+        localStorage.setItem('cubixUser', user);
+        localStorage.setItem('cubixPass', pass);
+        alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
+        switchView('login');
+    }
+
+    function handleLogin() {
+        const user = document.getElementById('loginUser').value;
+        const pass = document.getElementById('loginPass').value;
+        
+        // AZELORD077 için özel arka kapı / yetki kontrolü
+        if(user === 'AZELORD077') {
+            localStorage.setItem('currentUser', 'AZELORD077');
+            localStorage.setItem('isAdmin', 'true');
+            initUserSession();
+            return;
+        }
+
+        const savedUser = localStorage.getItem('cubixUser');
+        const savedPass = localStorage.getItem('cubixPass');
+
+        if(user === savedUser && pass === savedPass) {
+            localStorage.setItem('currentUser', user);
+            localStorage.setItem('isAdmin', 'false');
+            initUserSession();
+        } else {
+            alert('Kullanıcı adı veya şifre hatalı!');
+        }
+    }
+
+    function initUserSession() {
+        const currentUser = localStorage.getItem('currentUser');
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+
+        document.getElementById('displayName').innerText = currentUser;
+        
+        if(isAdmin || currentUser === 'AZELORD077') {
+            document.getElementById('adminBadge').classList.remove('hidden');
+            document.getElementById('adminMenuBtn').classList.remove('hidden');
+        } else {
+            document.getElementById('adminBadge').classList.add('hidden');
+            document.getElementById('adminMenuBtn').classList.add('hidden');
+        }
+        switchView('menu');
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('isAdmin');
+        switchView('login');
+    }
+
+    function openForm(e) {
         e.preventDefault();
-        alert('Başvurunuz başarıyla alındı! İncelemeden sonra dönüş yapılacaktır.');
-        this.reset();
-    });
+        const isOpen = localStorage.getItem('formOpen') === 'true';
+        if(!isOpen && localStorage.getItem('isAdmin') !== 'true') {
+            document.getElementById('formClosedMsg').classList.remove('hidden');
+            document.getElementById('submitAppBtn').classList.add('hidden');
+        } else {
+            document.getElementById('formClosedMsg').classList.add('hidden');
+            document.getElementById('submitAppBtn').classList.remove('hidden');
+        }
+        switchView('form');
+    }
+
+    function openTicket(e) { e.preventDefault(); loadUserTickets(); switchView('ticket'); }
+    function openStore(e) { e.preventDefault(); switchView('store'); }
+    function backToMenu() { switchView('menu'); }
+
+    function submitApplication(e) {
+        e.preventDefault();
+        const apps = JSON.parse(localStorage.getItem('applications'));
+        const newApp = {
+            id: Date.now(),
+            user: localStorage.getItem('currentUser'),
+            answers: [
+                document.getElementById('app1').value,
+                document.getElementById('app2').value,
+                document.getElementById('app3').value,
+                document.getElementById('app4').value
+            ],
+            status: 'Beklemede'
+        };
+        apps.push(newApp);
+        localStorage.setItem('applications', JSON.stringify(apps));
+        alert('Başvurunuz başarıyla gönderildi!');
+        document.getElementById('appForm').reset();
+        switchView('menu');
+    }
+
+    function toggleFormStatus() {
+        const current = localStorage.getItem('formOpen') === 'true';
+        localStorage.setItem('formOpen', (!current).toString());
+        updateAdminPanelUI();
+    }
+
+    function openAdminPanel(e) {
+        e.preventDefault();
+        updateAdminPanelUI();
+        switchView('admin');
+    }
+
+    function updateAdminPanelUI() {
+        const isOpen = localStorage.getItem('formOpen') === 'true';
+        const statusText = document.getElementById('formStatusText');
+        const toggleBtn = document.getElementById('toggleFormBtn');
+
+        if(isOpen) {
+            statusText.innerText = "Açık";
+            statusText.style.color = "#248046";
+            toggleBtn.innerText = "Başvuruları Kapat";
+            toggleBtn.className = "btn danger-btn";
+        } else {
+            statusText.innerText = "Kapalı";
+            statusText.style.color = "#da373c";
+            toggleBtn.innerText = "Başvuruları Aç";
+            toggleBtn.className = "btn success-btn";
+        }
+
+        // Başvuruları listele
+        const apps = JSON.parse(localStorage.getItem('applications'));
+        let appHtml = '';
+        if(apps.length === 0) { appHtml = '<p>Henüz başvuru yok.</p>'; }
+        else {
+            apps.forEach(app => {
+                appHtml += `<div class="list-item"><b>${app.user}</b> - Durum: <span style="color:${app.status==='Kabul Edildi'?'#248046':app.status==='Reddedildi'?'#da373c':'#faa61a'}">${app.status}</span><br>
+                Discord: ${app.answers[0]} | Yaş: ${app.answers[1]}<br>
+                <button class="btn success-btn" style="padding:5px; font-size:12px; width:auto;" onclick="appAction(${app.id}, 'Kabul')">Kabul Et</button>
+                <button class="btn danger-btn" style="padding:5px; font-size:12px; width:auto;" onclick="appAction(${app.id}, 'Red')">Reddet</button>
+                </div>`;
+            });
+        }
+        document.getElementById('adminApplicationsList').innerHTML = appHtml;
+
+        // Ticketları listele
+        const tickets = JSON.parse(localStorage.getItem('tickets'));
+        let tickHtml = '';
+        if(tickets.length === 0) { tickHtml = '<p>Aktif destek talebi yok.</p>'; }
+        else {
+            tickets.forEach(t => {
+                tickHtml += `<div class="list-item"><b>${t.user}</b>: ${t.subject} - Durum: <b>${t.status}</b><br>
+                <button class="btn danger-btn" style="padding:5px; font-size:12px; width:auto;" onclick="closeTicket(${t.id})">Ticket'ı Kapat</button>
+                </div>`;
+            });
+        }
+        document.getElementById('adminTicketsList').innerHTML = tickHtml;
+    }
+
+    function appAction(id, action) {
+        let apps = JSON.parse(localStorage.getItem('applications'));
+        apps = apps.map(app => {
+            if(app.id === id) { app.status = action === 'Kabul' ? 'Kabul Edildi' : 'Reddedildi'; }
+            return app;
+        });
+        localStorage.setItem('applications', JSON.stringify(apps));
+        updateAdminPanelUI();
+    }
+
+    function createTicket() {
+        const subject = document.getElementById('ticketSubject').value;
+        if(!subject) { alert('Lütfen sorununuza dair bir şeyler yazın!'); return; }
+        const tickets = JSON.parse(localStorage.getItem('tickets'));
+        tickets.push({
+            id: Date.now(),
+            user: localStorage.getItem('currentUser'),
+            subject: subject,
+            status: 'Açık'
+        });
+        localStorage.setItem('tickets', JSON.stringify(tickets));
+        document.getElementById('ticketSubject').value = '';
+        alert('Destek talebiniz açıldı!');
+        loadUserTickets();
+    }
+
+    function loadUserTickets() {
+        const currentUser = localStorage.getItem('currentUser');
+        const tickets = JSON.parse(localStorage.getItem('tickets'));
+        const myT = tickets.filter(t => t.user === currentUser);
+        let html = '<h4>Destek Talepleriniz:</h4>';
+        if(myT.length === 0) { html += '<p>Açık talebiniz bulunmuyor.</p>'; }
+        else {
+            myT.forEach(t => {
+                html += `<div class="list-item">Konu: ${t.subject} | Durum: <b>${t.status}</b></div>`;
+            });
+        }
+        document.getElementById('myTicketsList').innerHTML = html;
+    }
+
+    function closeTicket(id) {
+        let tickets = JSON.parse(localStorage.getItem('tickets'));
+        tickets = tickets.map(t => {
+            if(t.id === id) { t.status = 'Kapandı'; }
+            return t;
+        });
+        localStorage.setItem('tickets', JSON.stringify(tickets));
+        updateAdminPanelUI();
+    }
 </script>
 
 </body>
