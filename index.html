@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunucu Başvuru ve Rehber Sistemi</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #1e1e1e; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        h1, h2 { color: #5865F2; text-align: center; }
+        .info-box { background: #2f3136; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; }
+        .btn { display: inline-block; background: #5865F2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 5px; }
+        .btn:hover { background: #4752c4; }
+        .question { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], textarea { width: 100%; padding: 10px; background: #2b2d31; border: 1px solid #383a40; border-radius: 5px; color: white; box-sizing: border-box; }
+        textarea { resize: vertical; height: 80px; }
+        button[type="submit"] { background: #248046; color: white; border: none; padding: 12px 20px; width: 100%; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+        button[type="submit"]:hover { background: #1a6335; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 Sunucu Başvuru Portalı</h1>
+    
+    <div class="info-box">
+        <p><strong>Sunucu IP Adresi:</strong> <code>oyna.sunucunuz.com</code></p>
+        <a href="https://discord.gg/senin-discord-davetin" target="_blank" class="btn">Discord Sunucumuza Katıl</a>
+    </div>
+
+    <h2>Rehber & Yetkili Başvuru Formu</h2>
+    <form id="applicationForm">
+        
+        <!-- 20 Soruluk Alan -->
+        <div class="question"><label>1. Adınız ve Soyadınız (veya Discord adınız):</label><input type="text" required></div>
+        <div class="question"><label>2. Yaşınız kaç?</label><input type="text" required></div>
+        <div class="question"><label>3. Günlük aktiflik süreniz kaç saat?</label><input type="text" required></div>
+        <div class="question"><label>4. Daha önce başka bir sunucuda görev yaptınız mı? Hangileri?</label><textarea required></textarea></div>
+        <div class="question"><label>5. Neden sizi seçmeliyiz?</label><textarea required></textarea></div>
+        <div class="question"><label>6. Oyuncular arasında bir tartışma çıkarsa ilk hamlen ne olur?</label><textarea required></textarea></div>
+        <div class="question"><label>7. Komut bilgisi seviyeniz 10 üzerinden kaç?</label><input type="text" required></div>
+        <div class="question"><label>8. Küfür veya hakaret eden bir kullanıcıya hangi cezayı uygularsın?</label><textarea required></textarea></div>
+        <div class="question"><label>9. Sunucu kurallarını okudunuz mu?</label><input type="text" required></div>
+        <div class="question"><label>10. Mikrofonunuz var mı ve aktif olarak kullanabiliyor musunuz?</label><input type="text" required></div>
+        <div class="question"><label>11. Yetkiyi kötüye kullanmanın cezası nedir sizce?</label><textarea required></textarea></div>
+        <div class="question"><label>12. Ekip çalışmasına yatkın mısınız?</label><input type="text" required></div>
+        <div class="question"><label>13. Oyuncularla iletişiminiz nasıldır?</label><textarea required></textarea></div>
+        <div class="question"><label>14. Hile kullanan bir oyuncu görürseniz ne yaparsınız?</label><textarea required></textarea></div>
+        <div class="question"><label>15. Sunucumuzun gelişi için önerileriniz nelerdir?</label><textarea required></textarea></div>
+        <div class="question"><label>16. Kriz anlarında (sunucu çökmesi vb.) nasıl tepki verirsiniz?</label><textarea required></textarea></div>
+        <div class="question"><label>17. Discord rollerini ve yetkilerini ne kadar iyi biliyorsunuz?</label><textarea required></textarea></div>
+        <div class="question"><label>18. Yetkili olduğunuzda önceliğiniz ne olacak?</label><textarea required></textarea></div>
+        <div class="question"><label>19. Kendinizde gördüğünüz en büyük eksi yön nedir?</label><textarea required></textarea></div>
+        <div class="question"><label>20. Ekibimize katıldığınızda sunucuya ne gibi katkılar sağlayabilirsiniz?</label><textarea required></textarea></div>
+
+        <button type="submit">Başvuruyu Gönder</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('applicationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Başvurunuz başarıyla alındı! İncelemeden sonra dönüş yapılacaktır.');
+        this.reset();
+    });
+</script>
+
+</body>
+</html>
