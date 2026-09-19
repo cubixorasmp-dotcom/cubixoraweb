@@ -161,16 +161,23 @@
 
     <!-- YÖNETİCİ / YETKİLİ PANELİ -->
     <div id="adminDiv" class="hidden">
-        <h2>Yetkili Yönetim Paneli</h2>
+        <h2>Yetkili / Yönetim Paneli</h2>
         
-        <!-- KASA VE BAKIYE BÖLÜMÜ -->
-        <div id="adminBalanceBox" class="hidden" style="background: #248046; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
-            <h3 style="margin: 0 0 5px 0; color: #fff;">💰 Mağaza Toplam Kasası</h3>
-            <span id="totalBalanceText" style="font-size: 22px; font-weight: bold; color: #fff;">0 TL</span>
+        <!-- SADECE AZELORD077 GÖRECEK: KASA VE PARA ÇEKME BÖLÜMÜ -->
+        <div id="azelordBalanceBox" class="hidden" style="background: #183823; border: 2px solid #248046; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
+            <h3 style="margin: 0 0 5px 0; color: #57f287;">💰 Mağaza Kasası (Sadece AZELORD077)</h3>
+            <p style="margin: 0 0 10px 0; font-size: 13px; color: #b9bbbe;">VIP ve Ürün satışlarından biriken toplam tutar:</p>
+            <span id="totalBalanceText" style="font-size: 26px; font-weight: bold; color: #fff;">0 TL</span>
+            <div style="margin-top: 12px;">
+                <button class="btn success-btn" onclick="paraCekModalAc()">Kasadan Para Çek (IBAN / Papara)</button>
+            </div>
         </div>
 
-        <h3 id="userManageTitle">Yetkili Atama (Sadece AZELORD077)</h3>
-        <div id="userManageBox" class="form-group" style="background:#2f3136; padding:10px; border-radius:5px;"></div>
+        <!-- SADECE AZELORD077 GÖRECEK: YETKİ VERME BÖLÜMÜ -->
+        <div id="azelordStaffManageBox" class="hidden" style="margin-bottom: 15px;">
+            <h3 style="color: #faa61a;">⭐ Yetkili Atama Paneli (Sadece AZELORD077)</h3>
+            <div id="userManageBox" class="form-group" style="background:#2f3136; padding:10px; border-radius:5px;"></div>
+        </div>
         
         <div id="adminAppSection">
             <h3>Başvuru Yönetimi</h3>
@@ -407,13 +414,28 @@
             return;
         }
 
-        // Kasaya para ekleme
+        // Mağaza kasasına parayı ekle
         let currentBal = parseFloat(localStorage.getItem('storeBalance')) || 0;
         currentBal += secilenFiyat;
         localStorage.setItem('storeBalance', currentBal.toString());
 
-        alert(`Ödeme Başarılı! (${secilenFiyat} TL)\n"${secilenUrun}" hesabınıza tanımlandı. İyi oyunlar dileriz!`);
+        alert(`Ödeme Başarılı! (${secilenFiyat} TL)\n"${secilenUrun}" hesabınıza tanımlandı. Kasaya eklendi.`);
         sayfaGoster('menuDiv');
+    }
+
+    function paraCekModalAc() {
+        let bakiye = localStorage.getItem('storeBalance') || '0';
+        if(parseFloat(bakiye) <= 0) {
+            alert('Çekilebilecek bakiye bulunmuyor (Kasa 0 TL).');
+            return;
+        }
+
+        let hedef = prompt(`Mevcut Kasadaki Tutar: ${bakiye} TL\nParayı çekmek istediğiniz IBAN veya Papara numaranızı girin:`);
+        if(hedef) {
+            alert(`Para çekme talebiniz alındı!\n${bakiye} TL tutarındaki ödeme "${hedef}" hesabınıza gönderilmek üzere kuyruğa eklendi.`);
+            localStorage.setItem('storeBalance', '0'); // Kasayı sıfırla
+            yoneticiPaneliAc();
+        }
     }
 
     function yetkiliMesajGonder(ticketId) {
@@ -432,15 +454,17 @@
         let currentUser = localStorage.getItem('currentUser');
         let staffInfo = getStaffInfo(currentUser);
         
+        // KONTROL: SADECE AZELORD077 KASAYI VE YETKİ VERMEYİ GÖREBİLİR!
         if(currentUser === 'AZELORD077') {
-            document.getElementById('adminBalanceBox').classList.remove('hidden');
+            document.getElementById('azelordBalanceBox').classList.remove('hidden');
+            document.getElementById('azelordStaffManageBox').classList.remove('hidden');
+            
             let totalBal = localStorage.getItem('storeBalance') || '0';
             document.getElementById('totalBalanceText').innerText = totalBal + ' TL';
 
-            document.getElementById('userManageTitle').style.display = 'block';
             let users = JSON.parse(localStorage.getItem('users'));
             let map = JSON.parse(localStorage.getItem('staffsMap'));
-            let uBox = '<b>Kullanıcıya Yetki Ver / Kaldır:</b><br>';
+            let uBox = '<b>Kullanıcıya Seçmeli Yetki Ver / Kaldır:</b><br>';
             
             users.forEach(u => {
                 let info = map[u.username];
@@ -460,11 +484,10 @@
                 </div>`;
             });
             document.getElementById('userManageBox').innerHTML = uBox;
-            document.getElementById('userManageBox').style.display = 'block';
         } else {
-            document.getElementById('adminBalanceBox').classList.add('hidden');
-            document.getElementById('userManageTitle').style.display = 'none';
-            document.getElementById('userManageBox').style.display = 'none';
+            // AZELORD077 DEĞİLSE BU ALANLAR GİZLİ KALIR
+            document.getElementById('azelordBalanceBox').classList.add('hidden');
+            document.getElementById('azelordStaffManageBox').classList.add('hidden');
         }
 
         if(staffInfo) {
