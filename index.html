@@ -125,19 +125,19 @@
     <div id="storeDiv" class="hidden">
         <h2>🛒 CubixoraSMP Mağaza</h2>
         <div class="list-item">
-            <strong>💎 VIP Üyelik (30 Gün)</strong><br>
-            <span style="color:#b9bbbe;">Özel kitler, uçuş yetkisi ve özel prefix!</span><br>
-            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('VIP Üyelik')">Satın Al (50 TL)</button>
+            <strong>👑 CVIP++ Üyelik</strong><br>
+            <span style="color:#b9bbbe;">En üst düzey avantajlar, özel kitler ve komutlar!</span><br>
+            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('CVIP++ Üyelik')">Satın Al (100 TL)</button>
         </div>
         <div class="list-item">
-            <strong>👑 MVP+ Üyelik (Sınırsız)</strong><br>
-            <span style="color:#b9bbbe;">Mega kitler, renkli sohbet ve özel komutlar!</span><br>
-            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('MVP+ Üyelik')">Satın Al (120 TL)</button>
+            <strong>⭐ CVIP+ Üyelik</strong><br>
+            <span style="color:#b9bbbe;">Gelişmiş kitler ve ayrıcalıklı yetkiler!</span><br>
+            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('CVIP+ Üyelik')">Satın Al (70 TL)</button>
         </div>
         <div class="list-item">
-            <strong>💰 10 Milyon Oyun İçi Para ($)</strong><br>
-            <span style="color:#b9bbbe;">Sunucuda hemen zengin ol ve arsa al!</span><br>
-            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('10M Oyun Parası')">Satın Al (30 TL)</button>
+            <strong>💎 CVIP Üyelik</strong><br>
+            <span style="color:#b9bbbe;">Temel VIP avantajları ve başlangıç desteği!</span><br>
+            <button class="btn success-btn" style="padding:5px; font-size:12px; margin-top:5px;" onclick="satinAl('CVIP Üyelik')">Satın Al (50 TL)</button>
         </div>
         <button class="btn secondary-btn" onclick="sayfaGoster('menuDiv')" style="margin-top: 15px;">Geri Dön</button>
     </div>
@@ -166,9 +166,9 @@
     if(!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
     if(!localStorage.getItem('applications')) localStorage.setItem('applications', JSON.stringify([]));
     if(!localStorage.getItem('tickets')) localStorage.setItem('tickets', JSON.stringify([]));
-    // Yetki objesi: { username: { ticketStaff: true/false, appStaff: true/false } }
+    // Yetki objesi: { username: { smpStaff: true/false } }
     if(!localStorage.getItem('staffsMap')) {
-        let defaultMap = { 'AZELORD077': { ticketStaff: true, appStaff: true } };
+        let defaultMap = { 'AZELORD077': { smpStaff: true } };
         localStorage.setItem('staffsMap', JSON.stringify(defaultMap));
     }
 
@@ -218,15 +218,15 @@
     }
 
     function getStaffInfo(user) {
-        if(user === 'AZELORD077') return { ticketStaff: true, appStaff: true };
+        if(user === 'AZELORD077') return { smpStaff: true };
         let map = JSON.parse(localStorage.getItem('staffsMap'));
-        return map[user] || { ticketStaff: false, appStaff: false };
+        return map[user] || { smpStaff: false };
     }
 
     function herhangibirYetkisiVarMi(user) {
         if(user === 'AZELORD077') return true;
         let info = getStaffInfo(user);
-        return info.ticketStaff || info.appStaff;
+        return info.smpStaff;
     }
 
     function paneleGec() {
@@ -262,9 +262,9 @@
                 <strong>Başvuru Durumunuz:</strong> <span class="status-badge ${badgeClass}">${myApp.status}</span>
             </div>`;
             if(myApp.status === 'Reddedildi') {
-                formContent.style.display = 'block'; // Yeniden başvurabilsin
+                formContent.style.display = 'block';
             } else {
-                formContent.style.display = 'none'; // Kabul edildiyse veya bekliyorsa formu gizle
+                formContent.style.display = 'none';
             }
         } else {
             statusArea.innerHTML = '';
@@ -284,7 +284,6 @@
         let apps = JSON.parse(localStorage.getItem('applications'));
         let currentUser = localStorage.getItem('currentUser');
         
-        // Eskisini silip yenisini ekle (yeniden başvuru için)
         apps = apps.filter(a => a.user !== currentUser);
         apps.push({
             id: Date.now(),
@@ -382,18 +381,16 @@
         let currentUser = localStorage.getItem('currentUser');
         let staffInfo = getStaffInfo(currentUser);
         
-        // Sadece AZELORD077 yetkili atayabilir
         if(currentUser === 'AZELORD077') {
             document.getElementById('userManageTitle').style.display = 'block';
             let users = JSON.parse(localStorage.getItem('users'));
             let map = JSON.parse(localStorage.getItem('staffsMap'));
-            let uBox = '<b>Kullanıcıya Yetki Ver / Kaldır:</b><br>';
+            let uBox = '<b>Kullanıcıya SMP Yetkisi Ver / Kaldır:</b><br>';
             users.forEach(u => {
-                let info = map[u.username] || { ticketStaff: false, appStaff: false };
+                let info = map[u.username] || { smpStaff: false };
                 uBox += `<div style="margin-top:8px; border-bottom:1px solid #383a40; padding-bottom:5px;">
                     <strong>${u.username}</strong><br>
-                    🎫 Ticket Yetkisi: <button class="btn ${info.ticketStaff ? 'danger-btn' : 'success-btn'}" style="padding:2px 6px; width:auto; font-size:11px;" onclick="yetkiDegistir('${u.username}', 'ticketStaff')">${info.ticketStaff ? 'Kaldır' : 'Ver'}</button> | 
-                    📝 Başvuru Yetkisi: <button class="btn ${info.appStaff ? 'danger-btn' : 'success-btn'}" style="padding:2px 6px; width:auto; font-size:11px;" onclick="yetkiDegistir('${u.username}', 'appStaff')">${info.appStaff ? 'Kaldır' : 'Ver'}</button>
+                    🛡️ SMP Yetkilisi: <button class="btn ${info.smpStaff ? 'danger-btn' : 'success-btn'}" style="padding:2px 6px; width:auto; font-size:11px;" onclick="yetkiDegistir('${u.username}', 'smpStaff')">${info.smpStaff ? 'Kaldır' : 'Ver'}</button>
                 </div>`;
             });
             document.getElementById('userManageBox').innerHTML = uBox;
@@ -403,8 +400,7 @@
             document.getElementById('userManageBox').style.display = 'none';
         }
 
-        // Başvurular (Sadece Başvuru yetkilisi görebilir)
-        if(staffInfo.appStaff) {
+        if(staffInfo.smpStaff) {
             document.getElementById('adminAppSection').style.display = 'block';
             let apps = JSON.parse(localStorage.getItem('applications'));
             let appHtml = '';
@@ -419,12 +415,7 @@
                 </div>`;
             });
             document.getElementById('adminApps').innerHTML = appHtml || '<div class="list-item" style="color:#b9bbbe;">Başvuru yok.</div>';
-        } else {
-            document.getElementById('adminAppSection').style.display = 'none';
-        }
 
-        // Ticket Yönetimi (Sadece Ticket yetkilisi görebilir)
-        if(staffInfo.ticketStaff) {
             document.getElementById('adminTicketSection').style.display = 'block';
             let tickets = JSON.parse(localStorage.getItem('tickets'));
             let tickHtml = '';
@@ -448,6 +439,7 @@
             });
             document.getElementById('adminTickets').innerHTML = tickHtml || '<div class="list-item" style="color:#b9bbbe;">Ticket yok.</div>';
         } else {
+            document.getElementById('adminAppSection').style.display = 'none';
             document.getElementById('adminTicketSection').style.display = 'none';
         }
 
@@ -456,7 +448,7 @@
 
     function yetkiDegistir(username, type) {
         let map = JSON.parse(localStorage.getItem('staffsMap'));
-        if(!map[username]) map[username] = { ticketStaff: false, appStaff: false };
+        if(!map[username]) map[username] = { smpStaff: false };
         map[username][type] = !map[username][type];
         localStorage.setItem('staffsMap', JSON.stringify(map));
         yoneticiPaneliAc();
