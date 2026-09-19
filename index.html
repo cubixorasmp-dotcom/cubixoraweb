@@ -430,7 +430,7 @@
             document.getElementById('userManageTitle').style.display = 'block';
             let users = JSON.parse(localStorage.getItem('users'));
             let map = JSON.parse(localStorage.getItem('staffsMap'));
-            let uBox = '<b>Kullanıcıya SMP Yetkisi Ver / Kaldır:</b><br>';
+            let uBox = '<b>Kullanıcıya Yetki Ver / Kaldır:</b><br>';
             users.forEach(u => {
                 let info = map[u.username] || { smpStaff: false };
                 uBox += `<div class="staff-row">
@@ -521,7 +521,7 @@
         let apps = JSON.parse(localStorage.getItem('applications'));
         apps.splice(i, 1);
         localStorage.setItem('applications', JSON.stringify(apps));
-        yoneticiPaneliAns();
+        yoneticiPaneliAc();
     }
 
     function silTicket(i) {
