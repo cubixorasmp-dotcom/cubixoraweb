@@ -42,7 +42,7 @@
         <h1>CubixoraSMP Giriş</h1>
         <div class="form-group">
             <label>Kullanıcı Adı:</label>
-            <input type="text" id="loginUser" placeholder="Kullanıcı adınızı girin (Yönetici: AZELORD077)">
+            <input type="text" id="loginUser" placeholder="Kullanıcı adınızı girin">
         </div>
         <div class="form-group">
             <label>Şifre:</label>
@@ -164,8 +164,9 @@
         const pass = document.getElementById('regPass').value;
         if(!user || !pass) { alert('Lütfen tüm alanları doldurun!'); return; }
         
+        // AZELORD077 ismiyle normal kayıt olunamaz, o özel yöneticidir
         if(user.toLowerCase() === 'azelord077') {
-            alert('Bu kullanıcı adı özel bir yönetici adıdır, başka bir isim seçin!');
+            alert('Bu yönetici adı kayıt ekranından alınamaz! Lütfen giriş yapın.');
             return;
         }
 
@@ -188,11 +189,14 @@
         const user = document.getElementById('loginUser').value.trim();
         const pass = document.getElementById('loginPass').value;
         
-        // AZELORD077 için özel yönetici girişi
-        if(user === 'AZELORD077' && pass === '123456' || user === 'AZELORD077') { // Şifre kontrolü veya direkt giriş
+        // AZELORD077 ve şifresi 12345677ee için özel yönetici girişi
+        if(user === 'AZELORD077' && pass === '12345677ee') {
             localStorage.setItem('currentUser', 'AZELORD077');
             localStorage.setItem('isAdmin', 'true');
             initUserSession();
+            return;
+        } else if(user === 'AZELORD077') {
+            alert('AZELORD077 için şifre hatalı!');
             return;
         }
 
